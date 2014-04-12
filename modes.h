@@ -9,23 +9,11 @@
 #include <Encoder.h>
 #define NUM_LEDS 20
 
-class Modes {
- protected:
 
-	rgb_lcd *lcd;
-	CRGB *leds;
-	Encoder *dialOne;
-	Encoder *dialTwo;
-
- public:
-	Modes(rgb_lcd *lcd, CRGB *leds, Encoder *dialOne, Encoder *dialTwo) : lcd(lcd), leds(leds), dialOne(dialOne), dialTwo(dialTwo) {};	
-	void fixed();
-	void fade();
-	void rainbow();
-	void chasing();
-
-};
-
+void fixed(Encoder dialOne, Encoder dialTwo);
+void fade();
+void rainbow();
+void chasing();
 
 #endif
 

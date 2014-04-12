@@ -29,7 +29,7 @@ rgb_lcd lcd;
 CRGB leds[NUM_LEDS];
 Encoder dialOne(10, 9);
 Encoder dialTwo(4, 3);
-Modes modes(&lcd, &leds, &dialOne, &dialTwo);
+//Modes modes(&lcd, &leds, &dialOne, &dialTwo);
 
 char* modeNames[]={
 	"1 Fixed",
@@ -90,10 +90,10 @@ void loop() {
 	}
 	
 	switch (currentMode) {
-		case 0: modes.fixed(); break;
-		case 1: modes.chasing(); break;
-		case 2: modes.fade(); break;
-		case 3: modes.rainbow(); break;
+		case 0: fixed(dialOne, dialTwo); break;
+		//case 1: chasing(); break;
+		//case 2: fade(); break;
+		//case 3: rainbow(); break;
 	}
 	
 }
@@ -122,5 +122,5 @@ void setBrightness() {
 }
 
 
-}
+
 
