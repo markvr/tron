@@ -1,13 +1,7 @@
 #include "utils.h"
 
-void UtilsClass::init()
-{
-
-
-}
-
-
-UtilsClass Utils;
+char currentLcdLines[2][16];
+char savedLcdLines[2][16];
 
 
 char* p(char *fmt, ... ){
@@ -50,9 +44,30 @@ unsigned int EEPROMReadInt(int p_address)
 //}
 
 void setSetting(int mode, int setting, int val) {
+	p("Setting %u to %u \n", (mode * SETTINGS_PER_MODE + setting) * 2, val);
 	EEPROMWriteInt(((mode * SETTINGS_PER_MODE) + setting) * 2, val);
 }
 
 int getSetting(int mode, int setting) {
 	return EEPROMReadInt(((mode * SETTINGS_PER_MODE) + setting) * 2);
+}
+
+void printLcd(int line, char *text) {
+	lcd.setCursor( 0, line );
+	lcd.print("                ");
+	lcd.setCursor( 0, line );
+	strcpy(currentLcdLines[line], text);
+	lcd.print(text);
+}
+
+void saveLcd() {
+	strcpy(savedLcdLines[0], currentLcdLines[0]);
+	p("saved lcd line 0: %s \n", currentLcdLines[0] );
+	strcpy(savedLcdLines[1], currentLcdLines[1]);
+	p("saved lcd line 1: %s \n",  currentLcdLines[1] );
+}
+
+void revertLcd() {
+	printLcd(0, savedLcdLines[0]);
+	printLcd(1, savedLcdLines[1]);
 }

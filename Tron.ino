@@ -18,60 +18,74 @@ int currentMode = 0 ;
 int newMode = 0;
 int displayModeTimeout = 2;
 int displayModeChangeTime = millis();
-
+int brightness = 0; 
+boolean firstChange = true;
+boolean firstRun = true;
 int settings[NUM_MODES * SETTINGS_PER_MODE]; // settings array
 
 volatile boolean changeModeFlag;
-#define NUM_LEDS 115
-Encoder modeDial(17, 11);
+
 
 rgb_lcd lcd;
 CRGB leds[NUM_LEDS];
-Encoder dialOne(10, 9);
-Encoder dialTwo(4, 3);
-//Modes modes(&lcd, &leds, &dialOne, &dialTwo);
+Encoder dialMode(17, 11);
+Encoder dialBrightness(10, 9);
+Encoder dialOne(4, 3);
+Encoder dialTwo(1, 23);
+
+
 
 char* modeNames[]={
 	"1 Fixed",
 	"2 Chase",
 	"3 Fade",
-	"4 Rainbow"
+	"4 Rainbow",
+	"5 Sparkles",
+	"6 SparklesR"
 };
 
 
 void setup() {
 	// set up the LCD's number of columns and rows:
 	lcd.begin(16, 2);
-	lcd.print(modeNames[0]);
-	
+		
 	pinMode(MODE_PIN, INPUT_PULLUP);
 	attachInterrupt(MODE_PIN, changeModeInterrupt, RISING);
 	
-	LEDS.setBrightness(16);
 	LEDS.addLeds<WS2811, 14>(leds, NUM_LEDS);
 	
+	brightness = getSetting(50,1);
+	setBrightness(true);
+	
 	Serial.begin(9600);
-
 	delay(1000);
 }
 
 
 
 void loop() {
-	setBrightness();
+	setBrightness(false);
 	
 	// The button has been pressed
 	if (changeModeFlag) {
 		currentMode = newMode;
 		changeModeFlag = false;
-		Serial.println(currentMode);
+		firstChange = true;
+		firstRun = true;
+		char string[16];
+		sprintf(string, "%s %u", modeNames[currentMode], brightness);
+		printLcd(0, string);
 	}
 	
-	lcd.setCursor(0, 0);
-	long newPosition = modeDial.read();
+	
+	long newPosition = dialMode.read();
 
 	
 	if (newPosition % 4 == 0 && newPosition != oldPosition) {
+		if (firstChange == true) {
+			saveLcd();
+			firstChange = false;
+		}
 		int dir = (newPosition - oldPosition) / 4; 
 		oldPosition = newPosition;
 		newMode += dir;
@@ -79,23 +93,26 @@ void loop() {
 		if (newMode == -1) newMode = 0;
 		p("%i %i %i %u %s\n", newPosition, oldPosition, dir, newMode, modeNames[newMode]);
 		lcd.clear();
-		lcd.print(modeNames[newMode]);
+		printLcd(0, modeNames[newMode]);
 		displayModeChangeTime = millis();
+
 	}
 	
 	if (millis() > displayModeChangeTime + 1000 * displayModeTimeout && currentMode != newMode) {
 		newMode = currentMode;
-		lcd.clear();
-		lcd.print(modeNames[currentMode]);
+		firstChange = true;
+		revertLcd();
 	}
 	
 	switch (currentMode) {
-		case 0: fixed(dialOne, dialTwo); break;
-		//case 1: chasing(); break;
+		case 0: fixed(firstRun); break;
+		case 1: chasing(firstRun); break;
 		//case 2: fade(); break;
-		//case 3: rainbow(); break;
+		case 3: rainbow(firstRun); break;
+		case 4: sparkles(firstRun, false); break;
+		case 5: sparkles(firstRun, true); break;
 	}
-	
+	firstRun = false;
 }
 
 
@@ -106,16 +123,20 @@ void changeModeInterrupt()
 	sei();
 }
 
-void setBrightness() {
-	static long oldPosition = 16;
-	static int brightness = 0;
-	long newPosition =  dialTwo.read();
-	if (newPosition % 4 == 0 && newPosition != oldPosition) {
+void setBrightness(boolean firstRun) {
+	static long oldPosition = 0;
+	long newPosition =  dialBrightness.read();
+	if (newPosition % 4 == 0 && newPosition != oldPosition || firstRun) {
 		int dir = (newPosition - oldPosition) / 4; 
 		oldPosition = newPosition;
 		brightness += 5 * dir;
 		if (brightness < 0) brightness = 0;
-		if (brightness > 100) brightness = 100;
+		if (brightness > 256) brightness = 256;
+		setSetting(50, 1, brightness);
+		char string[16];
+		sprintf(string, "%s %u", modeNames[currentMode], brightness);
+		printLcd(0, string);
+				
 		LEDS.setBrightness(brightness);
 		LEDS.show();
 	}
