@@ -52,13 +52,13 @@ void setup() {
 	pinMode(MODE_PIN, INPUT_PULLUP);
 	attachInterrupt(MODE_PIN, changeModeInterrupt, RISING);
 	
-	LEDS.addLeds<WS2811, 7>(leds, 0, 65); // leg1
-	LEDS.addLeds<WS2811, 8>(leds, 66, 65); //leg 2
-	LEDS.addLeds<WS2811, 20>(leds, 131, 36); // front left
-	LEDS.addLeds<WS2811, 14>(leds, 167, 36); // front right
-	LEDS.addLeds<WS2811, 21>(leds, 203, 34); //right arm
-	LEDS.addLeds<WS2811, 2>(leds, 237, 25); // left arm
-	LEDS.addLeds<WS2811, 5>(leds, 262, 30); //back
+	LEDS.addLeds<WS2811, 7>(leds, 0, 66); // leg1
+	LEDS.addLeds<WS2811, 8>(leds, 66, 66); //leg 2
+ 	LEDS.addLeds<WS2811, 20>(leds, 132, 37); // front left
+ 	LEDS.addLeds<WS2811, 14>(leds, 169, 37); // front right
+ 	LEDS.addLeds<WS2811, 21>(leds, 206, 35); //right arm
+ 	LEDS.addLeds<WS2811, 2>(leds, 241, 26); // left arm
+ 	LEDS.addLeds<WS2811, 5>(leds, 267, 31); //back
 	
 	
 	
