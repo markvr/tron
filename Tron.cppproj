@@ -60,8 +60,6 @@
             <Value>c:\programs\arduino\libraries\FastSPI_LED2\utility</Value>
             <Value>c:\programs\arduino\libraries\Encoder</Value>
             <Value>c:\programs\arduino\libraries\Encoder\utility</Value>
-            <Value>c:\programs\arduino\libraries\Audio</Value>
-            <Value>c:\programs\arduino\libraries\Audio\utility</Value>
             <Value>c:\programs\arduino\libraries\EEPROM</Value>
             <Value>c:\programs\arduino\libraries\EEPROM\utility</Value>
             <Value>c:\programs\arduino\libraries\Grove_LCD</Value>
@@ -86,6 +84,7 @@
         <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
         <avrgcccpp.compiler.symbols.DefSymbols>
           <ListValues>
+            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>__AVR__</Value>
@@ -108,8 +107,6 @@
             <Value>c:\programs\arduino\libraries\FastSPI_LED2\utility</Value>
             <Value>c:\programs\arduino\libraries\Encoder</Value>
             <Value>c:\programs\arduino\libraries\Encoder\utility</Value>
-            <Value>c:\programs\arduino\libraries\Audio</Value>
-            <Value>c:\programs\arduino\libraries\Audio\utility</Value>
             <Value>c:\programs\arduino\libraries\EEPROM</Value>
             <Value>c:\programs\arduino\libraries\EEPROM\utility</Value>
             <Value>c:\programs\arduino\libraries\Grove_LCD</Value>
@@ -136,6 +133,7 @@
         <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
         <avrgcc.compiler.symbols.DefSymbols>
           <ListValues>
+            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>__AVR__</Value>
@@ -176,8 +174,6 @@
             <Value>c:\programs\arduino\libraries\FastSPI_LED2\utility</Value>
             <Value>c:\programs\arduino\libraries\Encoder</Value>
             <Value>c:\programs\arduino\libraries\Encoder\utility</Value>
-            <Value>c:\programs\arduino\libraries\Audio</Value>
-            <Value>c:\programs\arduino\libraries\Audio\utility</Value>
             <Value>c:\programs\arduino\libraries\EEPROM</Value>
             <Value>c:\programs\arduino\libraries\EEPROM\utility</Value>
             <Value>c:\programs\arduino\libraries\Grove_LCD</Value>
@@ -202,6 +198,7 @@
         <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
         <avrgcccpp.compiler.symbols.DefSymbols>
           <ListValues>
+            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>__AVR__</Value>
@@ -224,8 +221,6 @@
             <Value>c:\programs\arduino\libraries\FastSPI_LED2\utility</Value>
             <Value>c:\programs\arduino\libraries\Encoder</Value>
             <Value>c:\programs\arduino\libraries\Encoder\utility</Value>
-            <Value>c:\programs\arduino\libraries\Audio</Value>
-            <Value>c:\programs\arduino\libraries\Audio\utility</Value>
             <Value>c:\programs\arduino\libraries\EEPROM</Value>
             <Value>c:\programs\arduino\libraries\EEPROM\utility</Value>
             <Value>c:\programs\arduino\libraries\Grove_LCD</Value>
@@ -252,6 +247,7 @@
         <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
         <avrgcc.compiler.symbols.DefSymbols>
           <ListValues>
+            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>__AVR__</Value>
@@ -280,10 +276,22 @@
     <Folder Include="Visual Micro\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Audio.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="modes.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="modes.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mode_helmet.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mode_helmet.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="settings.h">

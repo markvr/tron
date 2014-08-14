@@ -42,25 +42,66 @@ void fixed(boolean firstRun) {
 
 
 
+//void chasing(boolean firstRun) {
+	//static unsigned long lastUpdate = 0;
+	//static int level = 0;
+	//static int dir = 1;
+	//static int currentLED = 0;
+	//static long dialOneOldPosition = 0;
+	//static int speed = getSetting(1,1);
+	//boolean speedChanged = false;
+//
+	//if (speed < 10 || speed > 100) speed = 10; 
+	//long dialOneNewPosition =  dialOne.read();
+	//if (firstRun) dialOneOldPosition = dialOneNewPosition;
+	//if (dialOneNewPosition % 4 == 0 && dialOneNewPosition != dialOneOldPosition) {
+		//int dir = (dialOneNewPosition - dialOneOldPosition) / 4;
+		//dialOneOldPosition = dialOneNewPosition;
+		//speed += 10* dir;
+		//if (speed < 10) speed = 10;
+		//if (speed > 100) speed = 100;
+		//setSetting(1,1,speed);
+		//speedChanged = true;
+	//}
+	//
+	//if (speedChanged || firstRun) {
+		//char string[16];
+		//sprintf(string, "speed: %i", speed);
+		//printLcd(1, string);
+	//}
+	//
+	//
+	//if ( (millis() - lastUpdate > 10000 / speed) ) {
+		//memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
+		//leds[currentLED] = CRGB(128, 0, 0);
+		//currentLED = (currentLED + dir) % NUM_LEDS;
+		//if (currentLED == 0 || currentLED == NUM_LEDS - 1) dir = dir * -1;
+		//p("LED: %u \n", currentLED);
+		//lastUpdate = millis();
+		//LEDS.show();
+	//}
+//
+//}
+
+
 void chasing(boolean firstRun) {
 	static unsigned long lastUpdate = 0;
 	static int level = 0;
 	static int dir = 1;
-	static int currentLED = 0;
+	int led;
 	static long dialOneOldPosition = 0;
-	static int speed = getSetting(1,1);
 	boolean speedChanged = false;
+	static int speed = 0;
 
-	if (speed < 10 || speed > 100) speed = 10; 
 	long dialOneNewPosition =  dialOne.read();
-	if (firstRun) dialOneOldPosition = dialOneNewPosition;
+	if (firstRun) {
+		dialOneOldPosition = dialOneNewPosition;
+		led = 0;
+	}
 	if (dialOneNewPosition % 4 == 0 && dialOneNewPosition != dialOneOldPosition) {
 		int dir = (dialOneNewPosition - dialOneOldPosition) / 4;
 		dialOneOldPosition = dialOneNewPosition;
-		speed += 10* dir;
-		if (speed < 10) speed = 10;
-		if (speed > 100) speed = 100;
-		setSetting(1,1,speed);
+		speed +=  dir;
 		speedChanged = true;
 	}
 	
@@ -70,16 +111,13 @@ void chasing(boolean firstRun) {
 		printLcd(1, string);
 	}
 	
+
+	memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
+	leds[speed] = CRGB(128, 0, 0);
 	
-	if ( (millis() - lastUpdate > 1000 / speed) ) {
-		memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
-		leds[currentLED] = CRGB(128, 0, 0);
-		currentLED = (currentLED + dir) % NUM_LEDS;
-		if (currentLED == 0 || currentLED == NUM_LEDS - 1) dir = dir * -1;
-		
-		lastUpdate = millis();
-		LEDS.show();
-	}
+	
+	
+	LEDS.show();
 
 }
 
@@ -133,7 +171,6 @@ void rainbow(boolean firstRun) {
 	long dialOneNewPosition =  dialOne.read();
 	if (firstRun) dialOneOldPosition = dialOneNewPosition;
 	if (dialOneNewPosition % 4 == 0 && dialOneNewPosition != dialOneOldPosition) {
-		p("before: %u,", density);
 		int dir = (dialOneNewPosition - dialOneOldPosition) / 4;
 		dialOneOldPosition = dialOneNewPosition;
 		density += dir;
@@ -241,27 +278,31 @@ void sparkles(boolean firstRun, boolean rainbow) {
 		dialOneOldPosition = dialOneNewPosition;
 		
 		if (dir == 1) {	// Going Up
-			if (numLit < NUM_LEDS) {	// Similar to above:
-				int bin = random16(NUM_LEDS - numLit);	// Choose a random unlit led
-				lit[numLit] = unlit[bin];		// Move it to the lit array
-				brightness[unlit[bin]] =  random8(64) * 512; //randomize it's value
-				if (rainbow) {
-					hues[unlit[bin]] = random8();
-				} else {
-					hues[unlit[bin]] = hue;
+			for (int i = 0; i < 10; i++) {
+				if (numLit < NUM_LEDS) {	// Similar to above:
+					int bin = random16(NUM_LEDS - numLit);	// Choose a random unlit led
+					lit[numLit] = unlit[bin];		// Move it to the lit array
+					brightness[unlit[bin]] =  random8(64) * 512; //randomize it's value
+					if (rainbow) {
+						hues[unlit[bin]] = random8();
+					} else {
+						hues[unlit[bin]] = hue;
+					}
+					// and remove it from the unlit array
+					for (int j = bin; j < NUM_LEDS - 1; j++) {
+						unlit[j] = unlit[j+1];
+					}
+					numLit++;
 				}
-				// and remove it from the unlit array
-				for (int j = bin; j < NUM_LEDS - 1; j++) {
-					unlit[j] = unlit[j+1];
-				}
-				numLit++;
 			}
 		} else {
-			if (numLit > 0) {  // going down
-				unlit[NUM_LEDS - numLit] = lit[numLit]; // move the top most "lit" led to the unlit array
-				brightness[lit[numLit]] = 0;	// and turn it out etc.
-				lit[numLit] = 0;
-				numLit--;
+			for (int i = 0; i < 10; i++) {
+				if (numLit > 0) {  // going down
+					unlit[NUM_LEDS - numLit] = lit[numLit]; // move the top most "lit" led to the unlit array
+					brightness[lit[numLit]] = 0;	// and turn it out etc.
+					lit[numLit] = 0;
+					numLit--;
+				}
 			}
 		}
 		
@@ -316,3 +357,100 @@ void sparkles(boolean firstRun, boolean rainbow) {
 		LEDS.show();
 	}
 }
+	
+void falling(boolean firstRun) {
+		static long dialOneOldPosition = 0;
+		static long dialTwoOldPosition = 0;
+		static unsigned long lastUpdate = 0;
+		
+		const int hue = getSetting(0,1);	// Get the hue from the "fixed" mode.
+		
+		int distance = 5;
+		bool displayChanged = false;
+		const int numRibbons = 12;
+		
+		int ribbons[][2] = { {0,15},	{16,35},	{36,50},	{51,65},	{66,81},	{82,101},	{102,116},	{117,131},	{132,142},	{143,151},	{152,160},	{161,168},	{169,179},	{180,188},	{189,197},	{198,205},	{206,218},	{219,230},	{231,240},	{241,254},	{255,266},	{267,285}};
+
+			
+		static int positions[numRibbons] = {0};
+		if (firstRun) {
+			for (int i = 0; i < numRibbons; i++) {
+				positions[i]=random(ribbons[i][0], ribbons[i][1]);
+			}
+		}
+
+		static int tailLength = 5; //getSetting(3,1);	
+		tailLength = constrain(tailLength, 0, 10);
+		const int saturationDecrement = (int) (255.0 / (float)tailLength);
+		
+		static int speed = 5; //getSetting(3,2);
+		if (speed < 0 || speed > 250) speed = 5; 
+
+		int updateTimeGap = 250 / speed;
+		
+		static int dir = 1;
+		
+		long dialOneNewPosition =  dialOne.read();
+		if (firstRun) dialOneOldPosition = dialOneNewPosition;
+		if (dialOneNewPosition % 4 == 0 && dialOneNewPosition != dialOneOldPosition) {
+			int dir = (dialOneNewPosition - dialOneOldPosition) / 4;
+			dialOneOldPosition = dialOneNewPosition;
+
+			tailLength += dir;
+			tailLength = constrain(tailLength, 0, 10);
+			p("old = %u, new = %u, dir = %i, taillength = %u \n", dialOneOldPosition, dialOneNewPosition, dir, tailLength);
+//			setSetting(3,1,tailLength);
+			displayChanged = true;
+
+		}
+
+// 		long dialTwoNewPosition =  dialTwo.read();
+// 		if (dialTwoNewPosition % 4 == 0 && dialTwoNewPosition != dialTwoOldPosition) {
+// 			int dir = (dialTwoNewPosition - dialTwoOldPosition) / 4;
+// 			dialTwoOldPosition = dialTwoNewPosition;
+// 			speed += dir;
+// 			speed = constrain(speed, 0, 10);
+// //			setSetting(3,2,speed);
+// 			displayChanged = true;
+// 		}
+		
+// 		if (displayChanged || firstRun) {
+// 			p("firstRun: %u, displayChanged: %u \n",firstRun, displayChanged);
+// 			char string[16];
+// 			sprintf(string, "lgth:%i, spd:%i", tailLength, speed);
+// 			printLcd(1, string);
+// 		}
+		displayChanged = false;		
+
+		if( (millis() - lastUpdate) > updateTimeGap) {
+			memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
+			for (int ribbonNumber = 0; ribbonNumber < numRibbons; ribbonNumber++) {
+				int firstLed = ribbons[ribbonNumber][0];
+				int lastLed = ribbons[ribbonNumber][1];
+				int length = lastLed - firstLed;
+				int position = positions[ribbonNumber];
+				p("position = %u, length = %u, firstLed = %u , lastLed = %u \n", position, length, firstLed, lastLed);
+				int sat = 255;
+				for (int i = 0; i < tailLength; i++) {
+					int led = position - i;
+					if (led < 0) {
+						led = lastLed + led;
+					} else {
+						led = led + firstLed;
+					}
+					
+					//p("ribbon = %u, i = %u, led[%i] = %u \n", ribbonNumber, i, led, sat);
+					leds[led] = CHSV( hue, sat ,  sat);
+					sat = sat - saturationDecrement;
+				}
+				positions[ribbonNumber] = (position + 1) % length;
+			}
+			
+			
+			
+			LEDS.show();
+			lastUpdate = millis();
+		}
+		
+	}
+	
