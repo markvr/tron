@@ -367,7 +367,7 @@ void falling(boolean firstRun) {
 		
 		int distance = 5;
 		bool displayChanged = false;
-		const int numRibbons = 12;
+		const int numRibbons = 23;
 		
 		int ribbons[][2] = { {0,15},	{16,35},	{36,50},	{51,65},	{66,81},	{82,101},	{102,116},	{117,131},	{132,142},	{143,151},	{152,160},	{161,168},	{169,179},	{180,188},	{189,197},	{198,205},	{206,218},	{219,230},	{231,240},	{241,254},	{255,266},	{267,285},	{286,296}};
 
@@ -391,7 +391,7 @@ void falling(boolean firstRun) {
 		static int dir = 1;
 		
 		long dialOneNewPosition =  dialOne.read();
-		if (firstRun) dialOneOldPosition = dialOneNewPosition;
+//		if (firstRun) dialOneOldPosition = dialOneNewPosition;
 		if (dialOneNewPosition % 4 == 0 && dialOneNewPosition != dialOneOldPosition) {
 			int dir = (dialOneNewPosition - dialOneOldPosition) / 4;
 			dialOneOldPosition = dialOneNewPosition;
@@ -404,22 +404,22 @@ void falling(boolean firstRun) {
 
 		}
 
-// 		long dialTwoNewPosition =  dialTwo.read();
-// 		if (dialTwoNewPosition % 4 == 0 && dialTwoNewPosition != dialTwoOldPosition) {
-// 			int dir = (dialTwoNewPosition - dialTwoOldPosition) / 4;
-// 			dialTwoOldPosition = dialTwoNewPosition;
-// 			speed += dir;
-// 			speed = constrain(speed, 0, 10);
-// //			setSetting(3,2,speed);
-// 			displayChanged = true;
-// 		}
+ 		long dialTwoNewPosition =  dialTwo.read();
+ 		if (dialTwoNewPosition % 4 == 0 && dialTwoNewPosition != dialTwoOldPosition) {
+ 			int dir = (dialTwoNewPosition - dialTwoOldPosition) / 4;
+ 			dialTwoOldPosition = dialTwoNewPosition;
+ 			speed += dir;
+ 			speed = constrain(speed, 0, 10);
+ //			setSetting(3,2,speed);
+ 			displayChanged = true;
+ 		}
 		
-// 		if (displayChanged || firstRun) {
-// 			p("firstRun: %u, displayChanged: %u \n",firstRun, displayChanged);
-// 			char string[16];
-// 			sprintf(string, "lgth:%i, spd:%i", tailLength, speed);
-// 			printLcd(1, string);
-// 		}
+ 		if (displayChanged ) {
+ 			//p("firstRun: %u, displayChanged: %u \n",firstRun, displayChanged);
+ 			char string[16];
+ 			sprintf(string, "lgth:%i, spd:%i", tailLength, speed);
+ 			printLcd(1, string);
+ 		}
 		displayChanged = false;		
 
 		if( (millis() - lastUpdate) > updateTimeGap) {
@@ -443,7 +443,7 @@ void falling(boolean firstRun) {
 					leds[led] = CHSV( hue, sat ,  sat);
 					sat = sat - saturationDecrement;
 				}
-				positions[ribbonNumber] = (position + 1) % length;
+				positions[ribbonNumber] = (position + 1) % (length + 1);
 			}
 			
 			

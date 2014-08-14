@@ -14,7 +14,7 @@
 
 int mainPosition = 0;
 long oldPosition  = 0;
-int currentMode = 0 ;
+int currentMode = 2 ;
 int newMode = 0;
 int displayModeTimeout = 2;
 int displayModeChangeTime = millis();
@@ -72,12 +72,17 @@ void setup() {
 	
 	Serial.begin(9600);
 	
+	
 }
 
 
 
 void loop() {
 	setBrightness(false);
+	
+
+	
+	
 	
 	// The button has been pressed
 	if (changeModeFlag) {
@@ -116,11 +121,11 @@ void loop() {
 		firstChange = true;
 		revertLcd();
 	}
-	
+	//
 	switch (currentMode) {
 		case 0: fixed(firstRun); break;
 		case 1: chasing(firstRun); break;
-		case 2: falling(firstRun); break;
+		case 2: falling(false); break;
 		case 3: rainbow(firstRun); break;
 		case 4: sparkles(firstRun, false); break;
 		//case 5: mode_helmet(firstRun); break;
@@ -147,7 +152,7 @@ void setBrightness(boolean firstRun) {
 		if (brightness > 256) brightness = 256;
 		setSetting(50, 1, brightness);
 		char string[16];
-		sprintf(string, "%s %u", modeNames[currentMode], brightness);
+		sprintf(string, "%s %u", modeNames[currentMode], brightness); 
 		printLcd(0, string);
 				
 		LEDS.setBrightness(brightness);
