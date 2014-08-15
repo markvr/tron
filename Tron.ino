@@ -23,7 +23,7 @@ boolean firstChange = true;
 boolean firstRun = true;
 int settings[NUM_MODES * SETTINGS_PER_MODE]; // settings array
 
-volatile boolean changeModeFlag;
+volatile boolean changeModeFlag = false;
 
 
 rgb_lcd lcd;
@@ -45,11 +45,19 @@ char* modeNames[]={
 };
 
 
+void clearEeprom() {
+	for (int i = 0; i< 2048; i++) {
+		EEPROMWriteInt(i, 0);
+	}
+}
+
 void setup() {
 	// set up the LCD's number of columns and rows:
 	lcd.begin(16, 2);
 		
 	pinMode(MODE_PIN, INPUT_PULLUP);
+	
+	
 	attachInterrupt(MODE_PIN, changeModeInterrupt, RISING);
 	
 	LEDS.addLeds<WS2811, 7>(leds, 0, 66); // leg1
@@ -60,33 +68,35 @@ void setup() {
  	LEDS.addLeds<WS2811, 2>(leds, 241, 26); // left arm
  	LEDS.addLeds<WS2811, 5>(leds, 267, 31); //back
 	
+
+	if (digitalRead(MODE_PIN) == LOW) {
+		clearEeprom();
+	}
 	
-	
-	
-	
-	
-	 
-	
-	brightness = getSetting(50,1);
+	brightness = getSetting(50,2);
 	setBrightness(true);
-	
 	Serial.begin(9600);
 	
+	
+
+
+	currentMode = getSetting(50,1);
+	newMode = currentMode;
 	
 }
 
 
 
 void loop() {
-	setBrightness(false);
-	
 
-	
+	setBrightness(false);
 	
 	
 	// The button has been pressed
 	if (changeModeFlag) {
 		currentMode = newMode;
+		p("changed mode to %u \n", currentMode);
+		setSetting(50,1, currentMode);
 		changeModeFlag = false;
 		firstChange = true;
 		firstRun = true;
@@ -150,7 +160,7 @@ void setBrightness(boolean firstRun) {
 		brightness += 5 * dir;
 		if (brightness < 0) brightness = 0;
 		if (brightness > 256) brightness = 256;
-		setSetting(50, 1, brightness);
+		setSetting(50, 2, brightness);
 		char string[16];
 		sprintf(string, "%s %u", modeNames[currentMode], brightness); 
 		printLcd(0, string);
@@ -158,6 +168,8 @@ void setBrightness(boolean firstRun) {
 		LEDS.setBrightness(brightness);
 		LEDS.show();
 	}
+	
+
 }
 
 

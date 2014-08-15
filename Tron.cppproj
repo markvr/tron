@@ -84,7 +84,6 @@
         <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
         <avrgcccpp.compiler.symbols.DefSymbols>
           <ListValues>
-            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>__AVR__</Value>
@@ -133,7 +132,6 @@
         <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
         <avrgcc.compiler.symbols.DefSymbols>
           <ListValues>
-            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>__AVR__</Value>
@@ -198,7 +196,6 @@
         <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
         <avrgcccpp.compiler.symbols.DefSymbols>
           <ListValues>
-            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>__AVR__</Value>
@@ -247,7 +244,6 @@
         <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
         <avrgcc.compiler.symbols.DefSymbols>
           <ListValues>
-            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>__AVR__</Value>

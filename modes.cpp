@@ -371,7 +371,7 @@ void falling(boolean firstRun) {
 		
 		int ribbons[][2] = { {0,15},	{16,35},	{36,50},	{51,65},	{66,81},	{82,101},	{102,116},	{117,131},	{132,142},	{143,151},	{152,160},	{161,168},	{169,179},	{180,188},	{189,197},	{198,205},	{206,218},	{219,230},	{231,240},	{241,254},	{255,266},	{267,285},	{286,296}};
 
-			
+		static int delay[numRibbons] = {0};	
 		static int positions[numRibbons] = {0};
 		if (firstRun) {
 			for (int i = 0; i < numRibbons; i++) {
@@ -425,25 +425,31 @@ void falling(boolean firstRun) {
 		if( (millis() - lastUpdate) > updateTimeGap) {
 			memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
 			for (int ribbonNumber = 0; ribbonNumber < numRibbons; ribbonNumber++) {
-				int firstLed = ribbons[ribbonNumber][0];
-				int lastLed = ribbons[ribbonNumber][1];
-				int length = lastLed - firstLed;
-				int position = positions[ribbonNumber];
-				p("position = %u, length = %u, firstLed = %u , lastLed = %u \n", position, length, firstLed, lastLed);
-				int sat = 255;
-				for (int i = 0; i < tailLength; i++) {
-					int led = position - i;
-					if (led < 0) {
-						led = lastLed + led;
-					} else {
-						led = led + firstLed;
-					}
+				if (delay[ribbonNumber] == 0) {
+					int firstLed = ribbons[ribbonNumber][0];
+					int lastLed = ribbons[ribbonNumber][1];
+					int length = lastLed - firstLed;
+					int position = positions[ribbonNumber];
+					p("position = %u, length = %u, firstLed = %u , lastLed = %u \n", position, length, firstLed, lastLed);
+					int sat = 255;
+					for (int i = 0; i < tailLength; i++) {
+						int led = position - i;
+						if (led >= 0) {
+							led = led + firstLed;
+						}
 					
-					//p("ribbon = %u, i = %u, led[%i] = %u \n", ribbonNumber, i, led, sat);
-					leds[led] = CHSV( hue, sat ,  sat);
-					sat = sat - saturationDecrement;
+						//p("ribbon = %u, i = %u, led[%i] = %u \n", ribbonNumber, i, led, sat);
+						leds[led] = CHSV( hue, sat ,  sat);
+						sat = sat - saturationDecrement;
+					}
+					positions[ribbonNumber] = (position + 1);
+					if (positions[ribbonNumber] == length + 1) {
+						positions[ribbonNumber] = 0;
+						delay[ribbonNumber] = random(5,20);
+					}
+				} else {
+					delay[ribbonNumber]--;
 				}
-				positions[ribbonNumber] = (position + 1) % (length + 1);
 			}
 			
 			
