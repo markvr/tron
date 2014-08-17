@@ -8,6 +8,7 @@ extern rgb_lcd lcd;
 extern CRGB leds[NUM_LEDS];
 
 void mode_falling(bool firstRun) {
+	const int MODE_NUMBER = 3;
 	static unsigned long lastUpdate = 0;
 	
 	const int hue = getSetting(0,1);	// Get the hue from the "fixed" mode.
@@ -36,8 +37,7 @@ void mode_falling(bool firstRun) {
 	if (tailLengthChange) {
 		tailLength += tailLengthChange;
 		tailLength = constrain(tailLength, 0, 10);
-		//p("old = %u, new = %u, dir = %i, taillength = %u \n", dialOneOldPosition, dialOneNewPosition, dir, tailLength);
-		//			setSetting(3,1,tailLength);
+		setSetting(3,1,tailLength);
 		displayChanged = true;
 
 	}
@@ -46,12 +46,11 @@ void mode_falling(bool firstRun) {
 	if (speedChange) {
 		speed += speedChange;
 		speed = constrain(speed, 0, 10);
-		//			setSetting(3,2,speed);
+		setSetting(3,2,speed);
 		displayChanged = true;
 	}
 	
 	if (displayChanged ) {
-		//p("firstRun: %u, displayChanged: %u \n",firstRun, displayChanged);
 		char string[16];
 		sprintf(string, "lgth:%i, spd:%i", tailLength, speed);
 		printLcd(1, string);
@@ -71,13 +70,11 @@ void mode_falling(bool firstRun) {
 				int lastLed = ribbons[ribbonNumber][1];
 				int length = lastLed - firstLed;
 				int position = positions[ribbonNumber];
-				p("position = %u, length = %u, firstLed = %u , lastLed = %u \n", position, length, firstLed, lastLed);
 				int sat = 255;
 				for (int i = 0; i < tailLength; i++) {
 					int led = position - i;
 					if (led >= 0) {
 						led = led + firstLed;
-						p("ribbon = %u, i = %u, led[%i] = %u \n", ribbonNumber, i, led, sat);
 						leds[led] = CHSV( hue, sat ,  sat);
 						sat = sat - saturationDecrement;
 					}

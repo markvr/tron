@@ -6,7 +6,7 @@
 #include "mode_falling.h"
 #include "mode_rainbow.h"
 #include "mode_chasing.h"
-
+#include "mode_helmet.h"
 #include "utils.h"
 
 #include <Wire.h>
@@ -147,7 +147,7 @@ void loop() {
 		case 3: mode_rainbow(firstRun); break;
 		case 4: mode_sparkles(firstRun, false); break;
 		case 5: mode_sparkles(firstRun, true); break;
-				//case 5: mode_helmet(firstRun); break;
+		case 6: mode_helmet(firstRun); break;
 	}
 	firstRun = false;
 }

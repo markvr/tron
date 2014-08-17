@@ -4,8 +4,6 @@
 #include "FastSPI_LED2.h"
 #include <Encoder.h>
 #include "utils.h"
-#define ARM_MATH_CM4
-#include <arm_math.h>
 #include "Audio.h"
 
 extern Encoder dialOne;
@@ -19,7 +17,7 @@ const int UPDATE_FREQUENCY = 20; //Hz -
 const int NUM_COLS = 5;
 const int COL_HEIGHT = 8;
 const int MAX_FFT_BIN_VALUE = 15000; // This is the approx max bin value seen in real life.
-const int FFT_SIZE = 64;     // must match value in Audio.h
+const int FFT_SIZE = 32;     // must match value in Audio.h
 
 // These values were derived from trial and error recording audio and averageing the bin values out to
 // get something that looked vaguley even across the consolidation.
@@ -35,7 +33,7 @@ int strips[][2] = {{82, 77}, {83, 89}, {97, 90}, { 98, 105}, {40,47}, {48, 55}, 
 // Volume Averaging
 // We want to store the approx average of x seconds to scale the values of the columns
 // Testing shows that we run at approx 100 frames / sec.  This is too many to store all the values, so store framesASec
-const int numSecs = 5;		// Change these
+const int numSecs = 10;		// Change these
 const int framesASec = 10;
 
 // Don't change below
