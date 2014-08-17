@@ -290,13 +290,13 @@
     <Compile Include="mode_falling.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="mode_fixed.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mode_fixed.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="mode_rainbow.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="fixed.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="fixed.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="modes.cpp">
@@ -321,6 +321,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="settings.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="test.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="test.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="utils.cpp">

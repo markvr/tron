@@ -13,11 +13,11 @@ extern rgb_lcd lcd;
 extern CRGB leds[NUM_LEDS];
 
 void mode_sparkles(bool firstRun, bool rainbow) {
-	static long dialOneOldPosition = 0;
-	static long dialTwoOldPosition = 0;
 	static long lastUpdate = 0;
 	const int hue = getSetting(0,1);	// Get the hue from the "fixed" mode.
 	bool displayChanged = false;
+
+	const int changeByNumber = 10;
 
 	int numLit = getSetting(4,1);	// Number of LEDs that are lit at a time
 	if (numLit < 0 || numLit > NUM_LEDS) numLit = 0;
@@ -71,21 +71,17 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 	}
 	
 	// "Number Lit" dial
-	long dialOneNewPosition =  dialOne.read();
-	if (firstRun) dialOneOldPosition = dialOneNewPosition; // Reset the old and new positions to the same
-	if (dialOneNewPosition % 4 == 0 && dialOneNewPosition != dialOneOldPosition) {
-		int dir = (dialOneNewPosition - dialOneOldPosition) / 4;
-		dialOneOldPosition = dialOneNewPosition;
-		
-		if (dir == 1) {	// Going Up
-			for (int i = 0; i < 10; i++) {
-				if (numLit < NUM_LEDS) {	// Similar to above:
+	int numLitChange = getDialOne();
+	if (numLitChange && (NUM_LEDS > (changeByNumber * numLitChange))) { // Stop going > NUM_LEDS
+		if (numLitChange == 1) {	// Going Up
+			for (int i = 0; i < changeByNumber; i++) {	// Increase by 10 at a time
+				if (numLit < NUM_LEDS) {	
 					int bin = random16(NUM_LEDS - numLit);	// Choose a random unlit led
 					lit[numLit] = unlit[bin];		// Move it to the lit array
 					brightness[unlit[bin]] =  random8(64) * 512; //randomize it's value
 					if (rainbow) {
 						hues[unlit[bin]] = random8();
-						} else {
+					} else {
 						hues[unlit[bin]] = hue;
 					}
 					// and remove it from the unlit array
@@ -95,8 +91,8 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 					numLit++;
 				}
 			}
-			} else {
-			for (int i = 0; i < 10; i++) {
+		} else {	// going down...
+			for (int i = 0; i < changeByNumber; i++) {
 				if (numLit > 0) {  // going down
 					unlit[NUM_LEDS - numLit] = lit[numLit]; // move the top most "lit" led to the unlit array
 					brightness[lit[numLit]] = 0;	// and turn it out etc.
@@ -110,12 +106,9 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 		displayChanged = true;
 	}
 	
-	long dialTwoNewPosition =  dialTwo.read();
-	if (firstRun) dialTwoOldPosition = dialTwoNewPosition;
-	if (dialTwoNewPosition % 4 == 0 && dialTwoNewPosition != dialTwoOldPosition) {
-		int dir = (dialTwoNewPosition - dialTwoOldPosition) / 4;
-		dialTwoOldPosition = dialTwoNewPosition;
-		speed += dir;
+	int speedChange = getDialTwo();
+	if (speedChange) {
+		speed += speedChange;
 		speed = constrain(speed, 1, 10);
 		setSetting(4,2,speed);
 		displayChanged = true;
@@ -147,7 +140,7 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 				brightness[lit[i]] = 0;	// Set the new value to 0;
 				if (rainbow) {
 					hues[lit[i]] = random8();
-					} else {
+				} else {
 					hues[lit[i]] = hue;
 				}
 				

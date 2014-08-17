@@ -22,6 +22,8 @@ int getSetting(int mode, int setting);
 void printLcd(int line, char *text);
 void saveLcd();
 void revertLcd();
+int getDialOne();
+int getDialTwo();
 
 #endif
 

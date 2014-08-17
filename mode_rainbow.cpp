@@ -2,19 +2,12 @@
 #include "Arduino.h"
 #include "rgb_lcd.h"
 #include "FastSPI_LED2.h"
-#include <Encoder.h>
 #include "utils.h"
 
-
-extern Encoder dialOne;
-extern Encoder dialTwo;
-extern Encoder dialBrightness;
 extern rgb_lcd lcd;
 extern CRGB leds[NUM_LEDS];
 
 void mode_rainbow(bool firstRun) {
-	static long dialOneOldPosition = 0;
-	static long dialTwoOldPosition = 0;
 	static int density = getSetting(3,1);
 	static int speed = getSetting(3,2);
 	static int offset = 0;
@@ -25,29 +18,21 @@ void mode_rainbow(bool firstRun) {
 	if (density < 1 || density > 32) density = 1;
 	if (speed < 1 || speed > 10) speed = 1;
 	
-	long dialOneNewPosition =  dialOne.read();
-	if (firstRun) dialOneOldPosition = dialOneNewPosition;
-	if (dialOneNewPosition % 4 == 0 && dialOneNewPosition != dialOneOldPosition) {
-		int dir = (dialOneNewPosition - dialOneOldPosition) / 4;
-		dialOneOldPosition = dialOneNewPosition;
-		density += dir;
+	int dialOneChanged = getDialOne();
+	if (dialOneChanged) {
+		density += dialOneChanged;
 		density = constrain(density, 1, 32);
 		setSetting(3,1,density);
 		displayChanged = true;
 	}
 
-	long dialTwoNewPosition =  dialTwo.read();
-	if (firstRun) dialTwoOldPosition = dialTwoNewPosition;
-	if (dialTwoNewPosition % 4 == 0 && dialTwoNewPosition != dialTwoOldPosition) {
-		int dir = (dialTwoNewPosition - dialTwoOldPosition) / 4;
-		dialTwoOldPosition = dialTwoNewPosition;
-		speed += dir;
+	int dialTwoChanged = getDialTwo();
+	if (dialTwoChanged) {
+		speed += dialTwoChanged;
 		speed = constrain(speed, 1, 10);
 		setSetting(3,2,speed);
 		displayChanged = true;
 	}
-
-
 	
 	if (displayChanged || firstRun) {
 		char string[16];
