@@ -7,8 +7,6 @@
 #include "mode_rainbow.h"
 #include "mode_chasing.h"
 
-#include "test.h";
-
 #include "utils.h"
 
 #include <Wire.h>
@@ -60,8 +58,6 @@ void clearEeprom() {
 }
 
 void setup() {
-
-	mode_fixed(true);
 	
 	// set up the LCD's number of columns and rows:
 	lcd.begin(16, 2);

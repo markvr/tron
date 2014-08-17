@@ -1,4 +1,8 @@
 #include "utils.h"
+//#include <Encoder.h>
+
+// extern Encoder dialOne;
+// extern Encoder dialTwo;
 
 char currentLcdLines[2][16];
 char savedLcdLines[2][16];
@@ -61,17 +65,17 @@ void revertLcd() {
 	printLcd(1, savedLcdLines[1]);
 }
 
-int getDialOne() {
-	static int dir = 1;
-	static long dialOneOldPosition = 0;
-	long dialOneNewPosition = 0;
-	int change = 0;
-	
-	long dialOneNewPosition =  dialOne.read();
-	//		if (firstRun) dialOneOldPosition = dialOneNewPosition;
-	if (dialOneNewPosition != dialOneOldPosition && dialOneNewPosition % 4 == 0) {
-		change = (dialOneNewPosition - dialOneOldPosition) / 4;
-		dialOneOldPosition = dialOneNewPosition;
-	}
-	return change;
-}
+// int getDialOne() {
+// 	static int dir = 1;
+// 	static long dialOneOldPosition = 0;
+// 	long dialOneNewPosition = 0;
+// 	int change = 0;
+// 	
+// 	dialOneNewPosition =  dialOne.read();
+// 	//		if (firstRun) dialOneOldPosition = dialOneNewPosition;
+// 	if (dialOneNewPosition != dialOneOldPosition && dialOneNewPosition % 4 == 0) {
+// 		change = (dialOneNewPosition - dialOneOldPosition) / 4;
+// 		dialOneOldPosition = dialOneNewPosition;
+// 	}
+// 	return change;
+// }
