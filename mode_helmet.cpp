@@ -1,5 +1,18 @@
+#include "settings.h"
+#include "Arduino.h"
+#include "rgb_lcd.h"
+#include "FastSPI_LED2.h"
+#include <Encoder.h>
+#include "utils.h"
+#define ARM_MATH_CM4
+#include <arm_math.h>
+#include "Audio.h"
 
-#include "mode_helmet.h"
+extern Encoder dialOne;
+extern Encoder dialTwo;
+extern Encoder dialBrightness;
+extern rgb_lcd lcd;
+extern CRGB leds[NUM_LEDS];
 
 const float DECAY_RATE = 0.93f;
 const int UPDATE_FREQUENCY = 20; //Hz -

@@ -9,6 +9,8 @@ Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "Tron", "Tron.cppproj", "{07
 EndProject
 Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "test-classes", "..\test-classes\test-classes.cppproj", "{8B0A27C1-AB6D-4031-A1C9-949D5AED3DD5}"
 EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "Test", "..\Test\Test.cppproj", "{247C630A-3F2F-40A2-B00C-7E2B9E7AD0B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR
@@ -31,6 +33,10 @@ Global
 		{8B0A27C1-AB6D-4031-A1C9-949D5AED3DD5}.Debug|AVR.Build.0 = Debug|AVR
 		{8B0A27C1-AB6D-4031-A1C9-949D5AED3DD5}.Release|AVR.ActiveCfg = Release|AVR
 		{8B0A27C1-AB6D-4031-A1C9-949D5AED3DD5}.Release|AVR.Build.0 = Release|AVR
+		{247C630A-3F2F-40A2-B00C-7E2B9E7AD0B5}.Debug|AVR.ActiveCfg = Debug|AVR
+		{247C630A-3F2F-40A2-B00C-7E2B9E7AD0B5}.Debug|AVR.Build.0 = Debug|AVR
+		{247C630A-3F2F-40A2-B00C-7E2B9E7AD0B5}.Release|AVR.ActiveCfg = Release|AVR
+		{247C630A-3F2F-40A2-B00C-7E2B9E7AD0B5}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

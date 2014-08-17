@@ -31,17 +31,6 @@ unsigned int EEPROMReadInt(int p_address)
 	return ((lowByte << 0) & 0xFF) + ((highByte << 8) & 0xFF00);
 }
 
-//void EEPROMWriteArray(int data[NUM_MODES * SETTINGS_PER_MODE]) {
-	//for(int i = 0; i < NUM_MODES * SETTINGS_PER_MODE; i++) {
-		//EEPROMWriteInt(2*i, data[i]);
-	//}
-//}
-//
-//void EEPROMReadArray(int *buf) {
-	//for(int i = 0; i < NUM_MODES * SETTINGS_PER_MODE; i++) {
-		//buf[i] = EEPROMReadInt(2*i);
-	//}
-//}
 
 void setSetting(int mode, int setting, int val) {
 	p("Setting %u to %u \n", (mode * SETTINGS_PER_MODE + setting) * 2, val);
@@ -70,4 +59,19 @@ void saveLcd() {
 void revertLcd() {
 	printLcd(0, savedLcdLines[0]);
 	printLcd(1, savedLcdLines[1]);
+}
+
+int getDialOne() {
+	static int dir = 1;
+	static long dialOneOldPosition = 0;
+	long dialOneNewPosition = 0;
+	int change = 0;
+	
+	long dialOneNewPosition =  dialOne.read();
+	//		if (firstRun) dialOneOldPosition = dialOneNewPosition;
+	if (dialOneNewPosition != dialOneOldPosition && dialOneNewPosition % 4 == 0) {
+		change = (dialOneNewPosition - dialOneOldPosition) / 4;
+		dialOneOldPosition = dialOneNewPosition;
+	}
+	return change;
 }

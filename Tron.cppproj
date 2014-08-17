@@ -49,6 +49,19 @@
         <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
         <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
         <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcc.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>ARDUINO=101</Value>
+            <Value>ARDUINO_MAIN</Value>
+            <Value>__AVR__</Value>
+            <Value>F_CPU=96000000</Value>
+            <Value>USB_SERIAL</Value>
+            <Value>LAYOUT_US_ENGLISH</Value>
+            <Value>__MK20DX128__</Value>
+            <Value>TEENSYDUINO=118</Value>
+            <Value>__cplusplus</Value>
+          </ListValues>
+        </avrgcc.compiler.symbols.DefSymbols>
         <avrgcc.compiler.directories.IncludePaths>
           <ListValues>
             <Value>c:\programs\arduino\hardware\teensy\cores\teensy3</Value>
@@ -130,19 +143,6 @@
         <avrgcccpp.compiler.miscellaneous.OtherFlags>-include=arduino.h</avrgcccpp.compiler.miscellaneous.OtherFlags>
         <avrgcccpp.linker.memorysettings.Comment>&lt;segmentname&gt;=&lt;address&gt;, for example  .boot=0xff</avrgcccpp.linker.memorysettings.Comment>
         <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
-        <avrgcc.compiler.symbols.DefSymbols>
-          <ListValues>
-            <Value>ARDUINO=101</Value>
-            <Value>ARDUINO_MAIN</Value>
-            <Value>__AVR__</Value>
-            <Value>F_CPU=96000000</Value>
-            <Value>USB_SERIAL</Value>
-            <Value>LAYOUT_US_ENGLISH</Value>
-            <Value>__MK20DX128__</Value>
-            <Value>TEENSYDUINO=118</Value>
-            <Value>__cplusplus</Value>
-          </ListValues>
-        </avrgcc.compiler.symbols.DefSymbols>
       </AvrGccCpp>
     </ToolchainSettings>
     <VisualMicroSettings>
@@ -161,6 +161,19 @@
         <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
         <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
         <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcc.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>ARDUINO=101</Value>
+            <Value>ARDUINO_MAIN</Value>
+            <Value>__AVR__</Value>
+            <Value>F_CPU=96000000</Value>
+            <Value>USB_SERIAL</Value>
+            <Value>LAYOUT_US_ENGLISH</Value>
+            <Value>__MK20DX128__</Value>
+            <Value>TEENSYDUINO=118</Value>
+            <Value>__cplusplus</Value>
+          </ListValues>
+        </avrgcc.compiler.symbols.DefSymbols>
         <avrgcc.compiler.directories.IncludePaths>
           <ListValues>
             <Value>c:\programs\arduino\hardware\teensy\cores\teensy3</Value>
@@ -242,19 +255,6 @@
         <avrgcccpp.compiler.miscellaneous.OtherFlags>-include=arduino.h</avrgcccpp.compiler.miscellaneous.OtherFlags>
         <avrgcccpp.linker.memorysettings.Comment>&lt;segmentname&gt;=&lt;address&gt;, for example  .boot=0xff</avrgcccpp.linker.memorysettings.Comment>
         <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
-        <avrgcc.compiler.symbols.DefSymbols>
-          <ListValues>
-            <Value>ARDUINO=101</Value>
-            <Value>ARDUINO_MAIN</Value>
-            <Value>__AVR__</Value>
-            <Value>F_CPU=96000000</Value>
-            <Value>USB_SERIAL</Value>
-            <Value>LAYOUT_US_ENGLISH</Value>
-            <Value>__MK20DX128__</Value>
-            <Value>TEENSYDUINO=118</Value>
-            <Value>__cplusplus</Value>
-          </ListValues>
-        </avrgcc.compiler.symbols.DefSymbols>
       </AvrGccCpp>
     </ToolchainSettings>
     <VisualMicroSettings>
@@ -278,6 +278,27 @@
     <Compile Include="Audio.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="mode_chasing.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mode_chasing.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mode_falling.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mode_falling.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mode_rainbow.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="fixed.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="fixed.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="modes.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -288,6 +309,15 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="mode_helmet.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mode_rainbow.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mode_sparkles.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mode_sparkles.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="settings.h">

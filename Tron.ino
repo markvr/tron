@@ -1,9 +1,16 @@
-#include "modes.h"
-//#include "mode_helmet.h"
 #include "settings.h"
 
+#include "mode_fixed.h"
+#include "mode_rainbow.h"
+#include "mode_sparkles.h"
+#include "mode_falling.h"
+#include "mode_rainbow.h"
+#include "mode_chasing.h"
+
+#include "test.h";
 
 #include "utils.h"
+
 #include <Wire.h>
 #include <SD.h>
 #include "rgb_lcd.h"
@@ -41,7 +48,8 @@ char* modeNames[]={
 	"3 Falling",
 	"4 Rainbow",
 	"5 Sparkles",
-	"6 Helmet"
+	"6 Spkls Rnbw",
+	"7 Helmet"
 };
 
 
@@ -52,6 +60,9 @@ void clearEeprom() {
 }
 
 void setup() {
+
+	mode_fixed(true);
+	
 	// set up the LCD's number of columns and rows:
 	lcd.begin(16, 2);
 		
@@ -89,6 +100,7 @@ void setup() {
 
 void loop() {
 
+	
 	setBrightness(false);
 	
 	
@@ -133,12 +145,13 @@ void loop() {
 	}
 	//
 	switch (currentMode) {
-		case 0: fixed(firstRun); break;
-		case 1: chasing(firstRun); break;
-		case 2: falling(false); break;
-		case 3: rainbow(firstRun); break;
-		case 4: sparkles(firstRun, false); break;
-		//case 5: mode_helmet(firstRun); break;
+		case 0: mode_fixed(firstRun); break;
+		case 1: mode_chasing(firstRun); break;
+		case 2: mode_falling(false); break;
+		case 3: mode_rainbow(firstRun); break;
+		case 4: mode_sparkles(firstRun, false); break;
+		case 5: mode_sparkles(firstRun, true); break;
+				//case 5: mode_helmet(firstRun); break;
 	}
 	firstRun = false;
 }

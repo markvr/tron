@@ -11,34 +11,7 @@ void _shuffle(int *array, int n) {
 	}
 }
 
-void fixed(boolean firstRun) {
-	static long dialOneOldPosition = 0;
-	static int hue = getSetting(0,1);
-	boolean hueChanged = false;
-	if (hue < 0 || hue > 250) hue = 0; // prevent crazy hues, not sure what comes out if eeprom not initd
-	long dialOneNewPosition =  dialOne.read();
-	if (firstRun) dialOneOldPosition = dialOneNewPosition;
-	if (dialOneNewPosition % 4 == 0 && dialOneNewPosition != dialOneOldPosition) {
-		int dir = (dialOneNewPosition - dialOneOldPosition) / 4;
-		dialOneOldPosition = dialOneNewPosition;
-		hue += 10* dir;
-		if (hue < 0) hue = 250;
-		if (hue > 250) hue = 0;
-		setSetting(0,1,hue);
-		hueChanged = true;
-	}
-	if (hueChanged || firstRun) {
-		char string[16];
-		sprintf(string, "hue: %i", hue);
-		printLcd(1, string);
 
-		for(int i = 0; i < NUM_LEDS; i++) {
-			leds[i].setHue(hue);
-		}
-		LEDS.show();
-	}
-
-}
 
 
 
@@ -155,60 +128,7 @@ void fade(boolean firstRun) {
 	}
 }
 
-void rainbow(boolean firstRun) {
-	static long dialOneOldPosition = 0;
-	static long dialTwoOldPosition = 0;
-	static int density = getSetting(3,1);
-	static int speed = getSetting(3,2);
-	static int offset = 0;
-	int updateTimeGap = 100;
-	static unsigned long lastUpdate = 0;
-	boolean displayChanged = false;
-	
-	if (density < 1 || density > 32) density = 1; 		
-	if (speed < 1 || speed > 10) speed = 1; 		
-	
-	long dialOneNewPosition =  dialOne.read();
-	if (firstRun) dialOneOldPosition = dialOneNewPosition;
-	if (dialOneNewPosition % 4 == 0 && dialOneNewPosition != dialOneOldPosition) {
-		int dir = (dialOneNewPosition - dialOneOldPosition) / 4;
-		dialOneOldPosition = dialOneNewPosition;
-		density += dir;
-		density = constrain(density, 1, 32);
-		setSetting(3,1,density);
-		displayChanged = true;
-	}
 
-	long dialTwoNewPosition =  dialTwo.read();
-	if (firstRun) dialTwoOldPosition = dialTwoNewPosition;
-	if (dialTwoNewPosition % 4 == 0 && dialTwoNewPosition != dialTwoOldPosition) {
-		int dir = (dialTwoNewPosition - dialTwoOldPosition) / 4;
-		dialTwoOldPosition = dialTwoNewPosition;
-		speed += dir;
-		speed = constrain(speed, 1, 10);
-		setSetting(3,2,speed);
-		displayChanged = true;
-	}
-
-
-	
-	if (displayChanged || firstRun) {
-		char string[16];
-		sprintf(string, "dty:%i, spd:%i", density, speed);
-		printLcd(1, string);
-	}
-
-	if( (millis() - lastUpdate) > (1000 / (speed * speed))) {
-		
-		offset += 5;
-		lastUpdate = millis();
-		for (int i = 0; i < NUM_LEDS; i++) {
-			int hue = (i * density) / 4  + offset;
-			leds[i].setHue(hue);
-		}
-		LEDS.show();
-	}
-}
 
 
 
@@ -445,7 +365,7 @@ void falling(boolean firstRun) {
 					positions[ribbonNumber] = (position + 1);
 					if (positions[ribbonNumber] == length + 1) {
 						positions[ribbonNumber] = 0;
-						delay[ribbonNumber] = random(5,20);
+						//delay[ribbonNumber] = random(5,20);
 					}
 				} else {
 					delay[ribbonNumber]--;
