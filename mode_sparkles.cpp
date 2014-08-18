@@ -5,10 +5,6 @@
 #include <Encoder.h>
 #include "utils.h"
 
-
-extern Encoder dialOne;
-extern Encoder dialTwo;
-extern Encoder dialBrightness;
 extern rgb_lcd lcd;
 extern CRGB leds[NUM_LEDS];
 

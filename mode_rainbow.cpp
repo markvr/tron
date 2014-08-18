@@ -15,13 +15,13 @@ void mode_rainbow(bool firstRun) {
 	static unsigned long lastUpdate = 0;
 	boolean displayChanged = false;
 	
-	if (density < 1 || density > 32) density = 1;
-	if (speed < 1 || speed > 10) speed = 1;
+	if (density < 0 || density > 32) density = 0;
+	if (speed < 1 || speed > 20) speed = 1;
 	
 	int dialOneChanged = getDialOne();
 	if (dialOneChanged) {
 		density += dialOneChanged;
-		density = constrain(density, 1, 32);
+		density = constrain(density, 0, 32);
 		setSetting(3,1,density);
 		displayChanged = true;
 	}
@@ -29,7 +29,7 @@ void mode_rainbow(bool firstRun) {
 	int dialTwoChanged = getDialTwo();
 	if (dialTwoChanged) {
 		speed += dialTwoChanged;
-		speed = constrain(speed, 1, 10);
+		speed = constrain(speed, 1, 20);
 		setSetting(3,2,speed);
 		displayChanged = true;
 	}
@@ -40,9 +40,9 @@ void mode_rainbow(bool firstRun) {
 		printLcd(1, string);
 	}
 
-	if( (millis() - lastUpdate) > (1000 / (speed * speed))) {
+	if( (millis() - lastUpdate) > (200 / (speed * speed))) {
 		
-		offset += 5;
+		offset += (speed / 5) + 1;
 		lastUpdate = millis();
 		for (int i = 0; i < NUM_LEDS; i++) {
 			int hue = (i * density) / 4  + offset;

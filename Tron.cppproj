@@ -69,8 +69,6 @@
             <Value>c:\programs\arduino\libraries\Wire\utility</Value>
             <Value>c:\programs\arduino\libraries\SD</Value>
             <Value>c:\programs\arduino\libraries\SD\utility</Value>
-            <Value>c:\programs\arduino\libraries\FastSPI_LED2</Value>
-            <Value>c:\programs\arduino\libraries\FastSPI_LED2\utility</Value>
             <Value>c:\programs\arduino\libraries\Encoder</Value>
             <Value>c:\programs\arduino\libraries\Encoder\utility</Value>
             <Value>c:\programs\arduino\libraries\EEPROM</Value>
@@ -115,8 +113,6 @@
             <Value>c:\programs\arduino\libraries\Wire\utility</Value>
             <Value>c:\programs\arduino\libraries\SD</Value>
             <Value>c:\programs\arduino\libraries\SD\utility</Value>
-            <Value>c:\programs\arduino\libraries\FastSPI_LED2</Value>
-            <Value>c:\programs\arduino\libraries\FastSPI_LED2\utility</Value>
             <Value>c:\programs\arduino\libraries\Encoder</Value>
             <Value>c:\programs\arduino\libraries\Encoder\utility</Value>
             <Value>c:\programs\arduino\libraries\EEPROM</Value>
@@ -181,8 +177,6 @@
             <Value>c:\programs\arduino\libraries\Wire\utility</Value>
             <Value>c:\programs\arduino\libraries\SD</Value>
             <Value>c:\programs\arduino\libraries\SD\utility</Value>
-            <Value>c:\programs\arduino\libraries\FastSPI_LED2</Value>
-            <Value>c:\programs\arduino\libraries\FastSPI_LED2\utility</Value>
             <Value>c:\programs\arduino\libraries\Encoder</Value>
             <Value>c:\programs\arduino\libraries\Encoder\utility</Value>
             <Value>c:\programs\arduino\libraries\EEPROM</Value>
@@ -227,8 +221,6 @@
             <Value>c:\programs\arduino\libraries\Wire\utility</Value>
             <Value>c:\programs\arduino\libraries\SD</Value>
             <Value>c:\programs\arduino\libraries\SD\utility</Value>
-            <Value>c:\programs\arduino\libraries\FastSPI_LED2</Value>
-            <Value>c:\programs\arduino\libraries\FastSPI_LED2\utility</Value>
             <Value>c:\programs\arduino\libraries\Encoder</Value>
             <Value>c:\programs\arduino\libraries\Encoder\utility</Value>
             <Value>c:\programs\arduino\libraries\EEPROM</Value>
@@ -305,12 +297,6 @@
     <Compile Include="modes.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="mode_helmet.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="mode_helmet.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="mode_rainbow.h">
       <SubType>compile</SubType>
     </Compile>
@@ -318,6 +304,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="mode_sparkles.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mode_volume.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mode_volume.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="settings.h">

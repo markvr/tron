@@ -17,7 +17,6 @@ const int UPDATE_FREQUENCY = 20; //Hz -
 const int NUM_COLS = 5;
 const int COL_HEIGHT = 8;
 const int MAX_FFT_BIN_VALUE = 15000; // This is the approx max bin value seen in real life.
-const int FFT_SIZE = 32;     // must match value in Audio.h
 
 // These values were derived from trial and error recording audio and averageing the bin values out to
 // get something that looked vaguley even across the consolidation.

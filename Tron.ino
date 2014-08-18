@@ -47,7 +47,7 @@ char* modeNames[]={
 	"4 Rainbow",
 	"5 Sparkles",
 	"6 Spkls Rnbw",
-	"7 Helmet"
+	"7 Volume"
 };
 
 
@@ -147,7 +147,7 @@ void loop() {
 		case 3: mode_rainbow(firstRun); break;
 		case 4: mode_sparkles(firstRun, false); break;
 		case 5: mode_sparkles(firstRun, true); break;
-		case 6: mode_helmet(firstRun); break;
+		case 6: mode_volume(firstRun); break;
 	}
 	firstRun = false;
 }
