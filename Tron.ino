@@ -103,13 +103,16 @@ void loop() {
 	if (changeModeFlag) {
 		currentMode = newMode;
 		p("changed mode to %u \n", currentMode);
-		setSetting(50,1, currentMode);
+		setSetting(GLOBAL_SETTINGS,1, currentMode);
 		changeModeFlag = false;
 		firstChange = true;
 		firstRun = true;
 		char string[16];
 		sprintf(string, "%s %u", modeNames[currentMode], brightness);
 		printLcd(0, string);
+
+		// Reset brightness to normal in case a mode boosted it
+		setBrightness(getSetting(GLOBAL_SETTINGS,2));
 	}
 	
 	
@@ -142,7 +145,7 @@ void loop() {
 	switch (currentMode) {
 		case 0: mode_tron(firstRun); break;
 		case 1: mode_fixed(firstRun); break;
-		case 2: mode_falling(false); break;
+		case 2: mode_falling(firstRun); break;
 		case 3: mode_rainbow(firstRun); break;
 		case 4: mode_sparkles(firstRun, false); break;
 		case 5: mode_sparkles(firstRun, true); break;
