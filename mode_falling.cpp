@@ -12,30 +12,30 @@ void mode_falling(bool firstRun) {
 	static unsigned long lastUpdate = 0;
 	
 	const int hue = getSetting(MODE_FIXED,1);	// Get the hue from the "fixed" mode.
-	const int ribbons[][2] = { {0,15},	{16,35},	{36,50},	{51,65},	{66,81},	{82,101},	{102,116},	{117,131},	{132,142},	{143,151},	{152,160},	{161,168},	{169,179},	{180,188},	{189,197},	{198,205},	{206,218},	{219,230},	{231,240},	{241,254},	{255,266},	{267,285},	{286,296}};	
+	const int ribbons[][2] = { {0,15},	{16,35},	{36,50},	{51,65},	{66,81},	{82,101},	{102,116},	{117,131},	{132,142},	{143,151},	{152,160},	{161,168},	{169,179},	{180,188},	{189,197},	{198,205},	{206,218},	{219,230},	{231,240},	{241,254},	{255,266},	{267,285},	{286,296}};
 	const int numRibbons = 23;
 	
 	bool displayChanged = false;
 
-	static int delay[numRibbons] = {0};
+	static int startDelay[numRibbons] = {0};
 	static int positions[numRibbons] = {0};
-	static int tailLength = constrain(getSetting(MODE_FALLING,1),1,10);
-	static int speed = constrain(getSetting(MODE_FALLING,2),1,10);
-	if (speed == 0) speed = 1;
+	static int tailLength =  getSetting(MODE_FALLING,1);;
+	static int speed = getSetting(MODE_FALLING,2);;
 	
 	if (firstRun) {
 		for (int i = 0; i < numRibbons; i++) {
-			positions[i]=random(ribbons[i][0], ribbons[i][1]);
+			positions[i]= random(0, ribbons[i][1] - ribbons[i][0]);
 		}
 	}
 
 	const int saturationDecrement = (int) (255.0 / (float)tailLength);
 
+
 	int tailLengthChange = getDialOne();
 	if (tailLengthChange) {
 		tailLength += tailLengthChange;
-		tailLength = constrain(tailLength, 1, 10);
-		setSetting(MODE_FALLING,1,tailLength);
+		tailLength = constrain(tailLength, 0, 10);
+		setSetting(MODE_FALLING, 1, tailLength);
 		displayChanged = true;
 
 	}
@@ -43,7 +43,7 @@ void mode_falling(bool firstRun) {
 	int speedChange = getDialTwo();
 	if (speedChange) {
 		speed += speedChange;
-		speed = constrain(speed, 1, 10);
+		speed = constrain(speed, 0, 10);
 		setSetting(MODE_FALLING,2,speed);
 		displayChanged = true;
 	}
@@ -55,14 +55,14 @@ void mode_falling(bool firstRun) {
 	}
 	displayChanged = false;
 
-	if( (millis() - lastUpdate) > 200 / speed) {
-		lastUpdate = millis();
+	if( (millis() - lastUpdate) >  250 / speed) {
 		for (int i = 0; i < NUM_LEDS; i++) {
 			leds[i] = 0;
 		}
 		
+		
 		for (int ribbonNumber = 0; ribbonNumber < numRibbons; ribbonNumber++) {
-			if (delay[ribbonNumber] == 0) {
+			if (startDelay[ribbonNumber] == 0) {
 				int firstLed = ribbons[ribbonNumber][0];
 				int lastLed = ribbons[ribbonNumber][1];
 				int length = lastLed - firstLed;
@@ -73,19 +73,25 @@ void mode_falling(bool firstRun) {
 					if (led >= 0) {
 						led = led + firstLed;
 						leds[led] = CHSV( hue, sat ,  sat);
+					p("ribbonNumber: %u, position: %u, led: %u, sat: %u\n", ribbonNumber, position, led, sat);
 						sat = sat - saturationDecrement;
 					}
 				}
 				positions[ribbonNumber] = (position + 1);
 				if (positions[ribbonNumber] == length + 1) {
 					positions[ribbonNumber] = 0;
-					delay[ribbonNumber] = random(5,20);
+					startDelay[ribbonNumber] = random(5,20);
 				}
-			} else {
-				delay[ribbonNumber]--;
+				} else {
+				startDelay[ribbonNumber]--;
 			}
 		}
+		
+		int globalBrightness = constrain(2 * getSetting(GLOBAL_SETTINGS, 2), 0, 255);
+		LEDS.setBrightness(globalBrightness);
+		
 		LEDS.show();
+		lastUpdate = millis();
 	}
 	
 }

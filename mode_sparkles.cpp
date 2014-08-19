@@ -144,7 +144,7 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 		}
 
 		// Boost the brightness
-		int brightness = constrain(2*getSetting(GLOBAL_SETTINGS,2),0,256);
+		int brightness = constrain(2*getSetting(GLOBAL_SETTINGS,2),0,255);
 		LEDS.setBrightness(brightness);
 		LEDS.show();
 	}

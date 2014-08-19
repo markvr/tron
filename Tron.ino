@@ -169,8 +169,7 @@ void setBrightness(boolean firstRun) {
 		int dir = (newPosition - oldPosition) / 4; 
 		oldPosition = newPosition;
 		brightness += 5 * dir;
-		if (brightness < 0) brightness = 0;
-		if (brightness > 256) brightness = 256;
+		brightness = constrain(brightness, 0, 150);
 		setSetting(50, 2, brightness);
 		char string[16];
 		sprintf(string, "%s %u", modeNames[currentMode], brightness); 
