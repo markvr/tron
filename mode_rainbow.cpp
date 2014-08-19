@@ -8,8 +8,8 @@ extern rgb_lcd lcd;
 extern CRGB leds[NUM_LEDS];
 
 void mode_rainbow(bool firstRun) {
-	static int density = getSetting(3,1);
-	static int speed = getSetting(3,2);
+	static int density = getSetting(MODE_RAINBOW,1);
+	static int speed = getSetting(MODE_RAINBOW,2);
 	static int offset = 0;
 	int updateTimeGap = 100;
 	static unsigned long lastUpdate = 0;
@@ -22,7 +22,7 @@ void mode_rainbow(bool firstRun) {
 	if (dialOneChanged) {
 		density += dialOneChanged;
 		density = constrain(density, 0, 32);
-		setSetting(3,1,density);
+		setSetting(MODE_RAINBOW,1,density);
 		displayChanged = true;
 	}
 
@@ -30,7 +30,7 @@ void mode_rainbow(bool firstRun) {
 	if (dialTwoChanged) {
 		speed += dialTwoChanged;
 		speed = constrain(speed, 1, 20);
-		setSetting(3,2,speed);
+		setSetting(MODE_RAINBOW,2,speed);
 		displayChanged = true;
 	}
 	

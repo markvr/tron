@@ -5,12 +5,11 @@
 #include "mode_sparkles.h"
 #include "mode_falling.h"
 #include "mode_rainbow.h"
-#include "mode_chasing.h"
-#include "mode_helmet.h"
+#include "mode_tron.h"
+#include "mode_volume.h"
 #include "utils.h"
 
 #include <Wire.h>
-#include <SD.h>
 #include "rgb_lcd.h"
 #include "FastSPI_LED2.h"
 #include <Encoder.h>
@@ -41,8 +40,8 @@ Encoder dialTwo(1, 23);
 //PIN 4 AND 10
 
 char* modeNames[]={
-	"1 Fixed",
-	"2 Chase",
+	"1 Tron",
+	"2 Fixed",
 	"3 Falling",
 	"4 Rainbow",
 	"5 Sparkles",
@@ -141,8 +140,8 @@ void loop() {
 	}
 	//
 	switch (currentMode) {
-		case 0: mode_fixed(firstRun); break;
-		case 1: mode_chasing(firstRun); break;
+		case 0: mode_tron(firstRun); break;
+		case 1: mode_fixed(firstRun); break;
 		case 2: mode_falling(false); break;
 		case 3: mode_rainbow(firstRun); break;
 		case 4: mode_sparkles(firstRun, false); break;

@@ -1,0 +1,1 @@
+void mode_tron(bool firstRun);

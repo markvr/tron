@@ -67,8 +67,8 @@
             <Value>c:\programs\arduino\hardware\teensy\cores\teensy3</Value>
             <Value>c:\programs\arduino\libraries\Wire</Value>
             <Value>c:\programs\arduino\libraries\Wire\utility</Value>
-            <Value>c:\programs\arduino\libraries\SD</Value>
-            <Value>c:\programs\arduino\libraries\SD\utility</Value>
+            <Value>c:\programs\arduino\libraries\FastSPI_LED2</Value>
+            <Value>c:\programs\arduino\libraries\FastSPI_LED2\utility</Value>
             <Value>c:\programs\arduino\libraries\Encoder</Value>
             <Value>c:\programs\arduino\libraries\Encoder\utility</Value>
             <Value>c:\programs\arduino\libraries\EEPROM</Value>
@@ -111,8 +111,8 @@
             <Value>c:\programs\arduino\hardware\teensy\cores\teensy3</Value>
             <Value>c:\programs\arduino\libraries\Wire</Value>
             <Value>c:\programs\arduino\libraries\Wire\utility</Value>
-            <Value>c:\programs\arduino\libraries\SD</Value>
-            <Value>c:\programs\arduino\libraries\SD\utility</Value>
+            <Value>c:\programs\arduino\libraries\FastSPI_LED2</Value>
+            <Value>c:\programs\arduino\libraries\FastSPI_LED2\utility</Value>
             <Value>c:\programs\arduino\libraries\Encoder</Value>
             <Value>c:\programs\arduino\libraries\Encoder\utility</Value>
             <Value>c:\programs\arduino\libraries\EEPROM</Value>
@@ -175,8 +175,8 @@
             <Value>c:\programs\arduino\hardware\teensy\cores\teensy3</Value>
             <Value>c:\programs\arduino\libraries\Wire</Value>
             <Value>c:\programs\arduino\libraries\Wire\utility</Value>
-            <Value>c:\programs\arduino\libraries\SD</Value>
-            <Value>c:\programs\arduino\libraries\SD\utility</Value>
+            <Value>c:\programs\arduino\libraries\FastSPI_LED2</Value>
+            <Value>c:\programs\arduino\libraries\FastSPI_LED2\utility</Value>
             <Value>c:\programs\arduino\libraries\Encoder</Value>
             <Value>c:\programs\arduino\libraries\Encoder\utility</Value>
             <Value>c:\programs\arduino\libraries\EEPROM</Value>
@@ -219,8 +219,8 @@
             <Value>c:\programs\arduino\hardware\teensy\cores\teensy3</Value>
             <Value>c:\programs\arduino\libraries\Wire</Value>
             <Value>c:\programs\arduino\libraries\Wire\utility</Value>
-            <Value>c:\programs\arduino\libraries\SD</Value>
-            <Value>c:\programs\arduino\libraries\SD\utility</Value>
+            <Value>c:\programs\arduino\libraries\FastSPI_LED2</Value>
+            <Value>c:\programs\arduino\libraries\FastSPI_LED2\utility</Value>
             <Value>c:\programs\arduino\libraries\Encoder</Value>
             <Value>c:\programs\arduino\libraries\Encoder\utility</Value>
             <Value>c:\programs\arduino\libraries\EEPROM</Value>

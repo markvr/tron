@@ -1,7 +1,7 @@
 #include "settings.h"
 #include "Arduino.h"
 #include "rgb_lcd.h"
-#include <FastLED/FastLED.h>
+#include "FastSPI_LED2.h"
 #include "utils.h"
 #include "Audio.h"
 
@@ -14,13 +14,14 @@ void mode_volume(bool firstRun) {
 	bool displayChanged = false;
 	static int maxVolume = 0;
 	static float hue = 0;
-	static int fadeRate = 9;
-	static int sensitivity = 10;
+	static int fadeRate = getSetting(MODE_VOLUME, 1);
+	static int sensitivity = getSetting(MODE_VOLUME, 2);
 	
 	int dialOneChanged = getDialOne();
 	if (dialOneChanged) {
 		sensitivity += dialOneChanged * 5;
 		sensitivity = constrain(sensitivity, 1, 50);
+		setSetting(MODE_VOLUME,1,sensitivity);
 		displayChanged = true;
 	}
 
@@ -28,6 +29,7 @@ void mode_volume(bool firstRun) {
 	if (dialTwoChanged) {
 		fadeRate += dialTwoChanged;
 		dialTwoChanged = constrain(dialTwoChanged, 1, 10);
+		setSetting(MODE_VOLUME,2,sensitivity);
 		displayChanged = true;
 	}
 	

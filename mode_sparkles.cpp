@@ -10,15 +10,15 @@ extern CRGB leds[NUM_LEDS];
 
 void mode_sparkles(bool firstRun, bool rainbow) {
 	static long lastUpdate = 0;
-	const int hue = getSetting(0,1);	// Get the hue from the "fixed" mode.
+	const int hue = getSetting(MODE_FIXED,1);	// Get the hue from the "fixed" mode.
 	bool displayChanged = false;
 
 	const int changeByNumber = 10;
 
-	int numLit = getSetting(4,1);	// Number of LEDs that are lit at a time
+	int numLit = getSetting(MODE_SPARKLES,1);	// Number of LEDs that are lit at a time
 	if (numLit < 0 || numLit > NUM_LEDS) numLit = 0;
 
-	int speed = getSetting(4,2);
+	int speed = getSetting(MODE_SPARKLES,2);
 	if (speed < 1 || speed > 10) speed = 1;
 	
 	// LEDs that are lit.  The LED numbers are in bins 0..numLit in a random order
@@ -98,7 +98,7 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 			}
 		}
 		
-		setSetting(4,1, numLit);
+		setSetting(MODE_SPARKLES,1, numLit);
 		displayChanged = true;
 	}
 	
@@ -106,7 +106,7 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 	if (speedChange) {
 		speed += speedChange;
 		speed = constrain(speed, 1, 10);
-		setSetting(4,2,speed);
+		setSetting(MODE_SPARKLES,2,speed);
 		displayChanged = true;
 	}
 	
