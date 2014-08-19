@@ -14,8 +14,8 @@ void mode_volume(bool firstRun) {
 	bool displayChanged = false;
 	static int maxVolume = 0;
 	static float hue = 0;
-	static int fadeRate = getSetting(MODE_VOLUME, 1);
-	static int sensitivity = getSetting(MODE_VOLUME, 2);
+	static int sensitivity = getSetting(MODE_VOLUME, 1);
+	static int fadeRate = getSetting(MODE_VOLUME, 2);
 	
 	int dialOneChanged = getDialOne();
 	if (dialOneChanged) {
@@ -29,7 +29,7 @@ void mode_volume(bool firstRun) {
 	if (dialTwoChanged) {
 		fadeRate += dialTwoChanged;
 		dialTwoChanged = constrain(dialTwoChanged, 1, 10);
-		setSetting(MODE_VOLUME,2,sensitivity);
+		setSetting(MODE_VOLUME,2,fadeRate);
 		displayChanged = true;
 	}
 	
