@@ -30,7 +30,7 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 	
 	// Brightness scale (0-32,768) of each LED that is active.  The bin number matches the LED number
 	// Used by sin16() fn to calculate the actual brightness of LED
-	static uint16_t brightness[NUM_LEDS];
+	static uint16_t phase[NUM_LEDS];
 	
 	// Hue of each LED that is active
 	static uint8_t hues[NUM_LEDS];
@@ -41,7 +41,7 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 		for (int i = 0; i < NUM_LEDS; i++) {
 			unlit[i] = i;
 			lit[i] = 0;
-			brightness[i] = 0;
+			phase[i] = 0;
 			hues[i] = 0;
 		}
 		
@@ -52,7 +52,7 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 		for (int i = 0; i < numLit; i++) {
 			int bin = random16(NUM_LEDS - i);	// Choose an unlit LED from the remaining ones (NUM_LEDS - i)
 			lit[i] = unlit[bin];				// Move it to the lit array
-			brightness[unlit[bin]] = random8(64) * 512; // Give it a random start value that is a multiple of 512
+			phase[unlit[bin]] = random8(64) * 512; // Give it a random start value that is a multiple of 512
 			if (rainbow) {
 				hues[unlit[bin]] = random8();
 				} else {
@@ -74,7 +74,7 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 				if (numLit < NUM_LEDS) {	
 					int bin = random16(NUM_LEDS - numLit);	// Choose a random unlit led
 					lit[numLit] = unlit[bin];		// Move it to the lit array
-					brightness[unlit[bin]] =  random8(64) * 512; //randomize it's value
+					phase[unlit[bin]] =  random8(64) * 512; //randomize it's value
 					if (rainbow) {
 						hues[unlit[bin]] = random8();
 					} else {
@@ -91,7 +91,7 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 			for (int i = 0; i < changeByNumber; i++) {
 				if (numLit > 0) {  // going down
 					unlit[NUM_LEDS - numLit] = lit[numLit]; // move the top most "lit" led to the unlit array
-					brightness[lit[numLit]] = 0;	// and turn it out etc.
+					phase[lit[numLit]] = 0;	// and turn it out etc.
 					lit[numLit] = 0;
 					numLit--;
 				}
@@ -119,21 +119,21 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 	}
 	
 	
-	if( (millis() - lastUpdate) > 200 / ( speed * speed)) {
+	if  (millis() - lastUpdate > 200 / speed ) {
 		memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
 		lastUpdate = millis();
 		for (int i = 0; i < numLit; i++) {
 			//leds[lit[i]] = CRGB(0, 0, sin16(brightness[lit[i]]) >> 8);
-			leds[lit[i]] = CHSV(hues[lit[i]], 255, sin16(brightness[lit[i]]) >> 8);
-			brightness[lit[i]] += 512;
-			if (brightness[lit[i]] > 32767) { // One of them has gone out,
+			leds[lit[i]] = CHSV(hues[lit[i]], 255, sin16(phase[lit[i]]) >> 8);
+			phase[lit[i]] += 2048;
+			if (phase[lit[i]] > 32767) { // One of them has gone out,
 				// We randomly choose a new LED from the unlit array, and swap it with the lit one that has gone out.
 				// Over time the arrays will both become randomly ordered, but this doesn't matter.
 				int temp = lit[i];	// Save the lit LED number
 				int bin = random16(NUM_LEDS - numLit);	// Choose a new random bin
 				lit[i] = unlit[bin]; // And swap them over
 				unlit[bin] = temp;
-				brightness[lit[i]] = 0;	// Set the new value to 0;
+				phase[lit[i]] = 0;	// Set the new value to 0;
 				if (rainbow) {
 					hues[lit[i]] = random8();
 				} else {
