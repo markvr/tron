@@ -79,15 +79,14 @@ void setup() {
 		clearEeprom();
 	}
 	
-	brightness = getSetting(50,2);
+	brightness = getSetting(GLOBAL_SETTINGS,2);
+	currentMode = getSetting(GLOBAL_SETTINGS,1);
+	newMode = currentMode;
+	
 	setBrightness(true);
 	Serial.begin(9600);
 	
 	
-
-
-	currentMode = getSetting(50,1);
-	newMode = currentMode;
 	
 }
 
@@ -170,7 +169,7 @@ void setBrightness(boolean firstRun) {
 		oldPosition = newPosition;
 		brightness += 5 * dir;
 		brightness = constrain(brightness, 0, 150);
-		setSetting(50, 2, brightness);
+		setSetting(GLOBAL_SETTINGS, 2, brightness);
 		char string[16];
 		sprintf(string, "%s %u", modeNames[currentMode], brightness); 
 		printLcd(0, string);

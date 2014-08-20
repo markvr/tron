@@ -73,7 +73,6 @@ void mode_falling(bool firstRun) {
 					if (led >= 0) {
 						led = led + firstLed;
 						leds[led] = CHSV( hue, sat ,  sat);
-					p("ribbonNumber: %u, position: %u, led: %u, sat: %u\n", ribbonNumber, position, led, sat);
 						sat = sat - saturationDecrement;
 					}
 				}
