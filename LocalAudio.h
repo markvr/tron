@@ -6,7 +6,7 @@
 
 #define FFT_SIZE 128
 
-class Audio
+class LocalAudio
 {
  private:
 	static IntervalTimer samplingTimer;
@@ -26,7 +26,7 @@ class Audio
 	static int getVolume();
 };
 
-extern Audio AUDIO;
+
 
 #endif
 

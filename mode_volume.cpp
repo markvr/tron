@@ -4,13 +4,13 @@
 
 #include "settings.h"
 #include "utils.h"
-#include "Audio.h"
+#include "LocalAudio.h"
 
 extern rgb_lcd lcd;
 extern CRGB leds[NUM_LEDS];
 
 void mode_volume(bool firstRun) {
-	if (firstRun) Audio::start();
+	if (firstRun) LocalAudio::start();
 	static long lastUpdate = 0;
 	bool displayChanged = false;
 	static int maxVolume = 0;
@@ -46,7 +46,7 @@ void mode_volume(bool firstRun) {
 		lastUpdate = millis();
 		memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
 
-		float volume = Audio::getVolume();
+		float volume = LocalAudio::getVolume();
 		float newHue = sqrt(volume) * sensitivity;
 		if (newHue > hue) {
 			hue = newHue;

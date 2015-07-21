@@ -1,26 +1,26 @@
-#include "Audio.h"
+#include "LocalAudio.h"
 
-IntervalTimer Audio::samplingTimer;
+IntervalTimer LocalAudio::samplingTimer;
 
-int Audio::sampleCounter = 0;
-bool Audio::samplingDone;
-int Audio::sampleRate = 9000;
-int Audio::inputPin = A8;  // Input ADC pin for audio data.
-int Audio::samples[FFT_SIZE];
-volatile int Audio::volume;
+int LocalAudio::sampleCounter = 0;
+bool LocalAudio::samplingDone;
+int LocalAudio::sampleRate = 9000;
+int LocalAudio::inputPin = A8;  // Input ADC pin for LocalAudio data.
+int LocalAudio::samples[FFT_SIZE];
+volatile int LocalAudio::volume;
 
-void Audio::init() {
+void LocalAudio::init() {
 	analogReadResolution(10); // Bits of resolution for the ADC.
 	analogReadAveraging(16); // Number of samples to average with each ADC reading.
 }
 
-void Audio::start() {
+void LocalAudio::start() {
 // 	sampleCounter = 0;
 // 	samplingDone = false;
 	samplingTimer.begin(callback, 1000000/sampleRate);
 }
 
-void Audio::callback() {
+void LocalAudio::callback() {
 	samples[sampleCounter] = analogRead(inputPin);
 	sampleCounter++;
 	if (sampleCounter == FFT_SIZE) {
@@ -34,16 +34,16 @@ void Audio::callback() {
 	}
 }
 
-void Audio::stop() {
+void LocalAudio::stop() {
 	samplingDone = true;
 	samplingTimer.end();
 	
 }
 
-int Audio::getVolume() {
+int LocalAudio::getVolume() {
 	return volume;
 }
 
 
-Audio Audio;
+LocalAudio LocalAudio;
 
