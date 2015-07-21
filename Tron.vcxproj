@@ -44,6 +44,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>D:\programs\arduino\hardware\teensy\cores\teensy3;D:\projects\Tron\Tron;D:\programs\arduino\libraries\EEPROM;D:\programs\arduino\libraries\EEPROM\utility;D:\programs\arduino\libraries\Encoder;D:\programs\arduino\libraries\Encoder\utility;D:\programs\arduino\libraries\FastLED;D:\programs\arduino\libraries\FastLED\utility;D:\programs\arduino\libraries\Grove_LCD;D:\programs\arduino\libraries\Grove_LCD\utility;D:\programs\arduino\libraries\Wire;D:\programs\arduino\libraries\Wire\utility;D:\programs\arduino\libraries;D:\programs\arduino\hardware\teensy\libraries;C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers;C:\Users\mark\Documents\Arduino\libraries;D:\programs\arduino\hardware\tools\arm-none-eabi\arm-none-eabi\include;D:\programs\arduino\hardware\tools\arm-none-eabi\arm-none-eabi\include;D:\programs\arduino\hardware\tools\arm-none-eabi\lib\gcc\arm-none-eabi\4.7.2\include;D:\programs\arduino\hardware\tools\arm-none-eabi\lib\gcc\arm-none-eabi\4.7.2\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -64,8 +65,67 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="Tron.ino">
+      <FileType>CppCode</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="modes.cpp" />
+    <ClCompile Include="mode_chasing.cpp" />
+    <ClCompile Include="mode_falling.cpp" />
+    <ClCompile Include="mode_fixed.cpp" />
+    <ClCompile Include="mode_rainbow.cpp" />
+    <ClCompile Include="mode_sparkles.cpp" />
+    <ClCompile Include="mode_tron.cpp" />
+    <ClCompile Include="mode_volume.cpp" />
+    <ClCompile Include="test.cpp" />
+    <ClCompile Include="utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Audio.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="modes.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="mode_chasing.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="mode_falling.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="mode_fixed.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="mode_rainbow.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="mode_sparkles.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="mode_tron.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="mode_volume.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="settings.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="test.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties VM_ADDITIONAL_PREPROC="F_CPU=96000000;USB_SERIAL_HID;LAYOUT_US_ENGLISH" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

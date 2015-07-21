@@ -5,7 +5,8 @@ Build this with:
   Arduino 1.05
   Teensduino 1.18
 
-It should also build with VisualMicro on VisualStudio 2013
+It should also build with VisualMicro on VisualStudio 2013.
+
   
 Libraries Needed:
   Encoder
