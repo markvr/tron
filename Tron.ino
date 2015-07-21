@@ -17,7 +17,10 @@
 #include <FastLED.h>
 #include <Encoder.h>
 #include <EEPROM.h>
-
+#include <Audio.h>
+#include <Wire.h>
+#include <SPI.h>
+#include <SD.h>
 
 int mainPosition = 0;
 long oldPosition  = 0;
