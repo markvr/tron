@@ -1,7 +1,8 @@
+#include <Arduino.h>
+#include <rgb_lcd.h>
+#include <FastLED.h>
+
 #include "settings.h"
-#include "Arduino.h"
-#include "rgb_lcd.h"
-#include "FastSPI_LED2.h"
 #include "utils.h"
 
 extern rgb_lcd lcd;

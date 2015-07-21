@@ -9,9 +9,12 @@
 #include "mode_volume.h"
 #include "utils.h"
 
+// For some (currently) unknown reason, all the imports used in other files also
+// need to be imported here as well.
+// Otherwise the compiler throws: "fatal error: XXX.h: No such file or directory"
 #include <Wire.h>
-#include "rgb_lcd.h"
-#include "FastSPI_LED2.h"
+#include <rgb_lcd.h>
+#include <FastLED.h>
 #include <Encoder.h>
 #include <EEPROM.h>
 
