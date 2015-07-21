@@ -13,7 +13,7 @@
 #include "rgb_lcd.h"
 #include "FastSPI_LED2.h"
 #include <Encoder.h>
-#include <eeprom.h>
+#include <EEPROM.h>
 
 
 int mainPosition = 0;
