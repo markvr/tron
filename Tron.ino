@@ -17,23 +17,20 @@
 #include <FastLED.h>
 #include <Encoder.h>
 #include <EEPROM.h>
-#include <Audio.h>
-#include <Wire.h>
-#include <SPI.h>
-#include <SD.h>
+//#include <Audio.h>
+//#include <Wire.h>
+//#include <SPI.h>
+//#include <SD.h>
 
-int mainPosition = 0;
-long oldPosition  = 0;
-int currentMode = 2 ;
-int newMode = 0;
+
+
 int displayModeTimeout = 2;
 int displayModeChangeTime = millis();
-int brightness = 0; 
-boolean firstChange = true;
-boolean firstRun = true;
-int settings[NUM_MODES * SETTINGS_PER_MODE]; // settings array
 
-volatile boolean changeModeFlag = false;
+// This is set to true by an interrupt when the "mode" button is pressed
+boolean changeModeFlag = false;
+
+boolean firstRun = true;
 
 
 rgb_lcd lcd;
@@ -42,18 +39,6 @@ Encoder dialMode(17, 11);
 Encoder dialBrightness(4, 9);
 Encoder dialOne(10, 3);
 Encoder dialTwo(1, 23);
-
-//PIN 4 AND 10
-
-char* modeNames[]={
-	"1 Tron",
-	"2 Fixed",
-	"3 Falling",
-	"4 Rainbow",
-	"5 Sparkles",
-	"6 Spkls Rnbw",
-	"7 Volume"
-};
 
 
 void clearEeprom() {
@@ -69,7 +54,6 @@ void setup() {
 		
 	pinMode(MODE_PIN, INPUT_PULLUP);
 	
-	
 	attachInterrupt(MODE_PIN, changeModeInterrupt, RISING);
 	
 	LEDS.addLeds<WS2811, 7>(leds, 0, 66); // leg1
@@ -81,80 +65,66 @@ void setup() {
  	LEDS.addLeds<WS2811, 5>(leds, 267, 31); //back
 	
 
+	// If we cock up the settings and save them to the EEProm in such a way the 
+	// Teensy crashes on boot, this it the get-out-jail card!
+	// Press and hold the mode dial btn and turn it on.
 	if (digitalRead(MODE_PIN) == LOW) {
 		clearEeprom();
 	}
 	
-	brightness = getSetting(GLOBAL_SETTINGS,2);
-	currentMode = getSetting(GLOBAL_SETTINGS,1);
-	newMode = currentMode;
-	
-	setBrightness(true);
+	setBrightness();
 	Serial.begin(9600);
-	
-	
 	
 }
 
 
-
 void loop() {
 
-	
-	setBrightness(false);
-	
+	readDials();
 	
 	// The button has been pressed
 	if (changeModeFlag) {
-		currentMode = newMode;
-		p("changed mode to %u \n", currentMode);
-		setSetting(GLOBAL_SETTINGS,1, currentMode);
-		changeModeFlag = false;
-		firstChange = true;
+		// Get the setting the mode dial is on
+		// And set out main mode to that
+		setSetting(MODE_MAIN, 0, getSetting(MODE_MAIN, 1));
+		int modeNumber = getSetting(MODE_MAIN, 0);
+		int settingNumber = getSetting(modeNumber, MODE_SETTING);
+		p("modeNumber : %u, settingNumber: %u \n", modeNumber, settingNumber);
 		firstRun = true;
-		char string[16];
-		sprintf(string, "%s %u", modeNames[currentMode], brightness);
-		printLcd(0, string);
-
+		writeDisplay();
 		// Reset brightness to normal in case a mode boosted it
-		setBrightness(getSetting(GLOBAL_SETTINGS,2));
+		setBrightness();
 	}
 	
-	
-	long newPosition = dialMode.read();
-
-	
-	if (newPosition % 4 == 0 && newPosition != oldPosition) {
-		if (firstChange == true) {
-			saveLcd();
-			firstChange = false;
-		}
-		int dir = (newPosition - oldPosition) / 4; 
-		oldPosition = newPosition;
-		newMode += dir;
-		if (newMode == NUM_MODES) newMode = NUM_MODES - 1;
-		if (newMode == -1) newMode = 0;
-		p("%i %i %i %u %s\n", newPosition, oldPosition, dir, newMode, modeNames[newMode]);
+	// The mode dial has been changed
+	if (getSettingChanged(MODE_MAIN,1)) {
 		lcd.clear();
-		printLcd(0, modeNames[newMode]);
+		printLcd(0, getModeName(getSetting(MODE_MAIN, 1)));
 		displayModeChangeTime = millis();
-
 	}
 	
-	if (millis() > displayModeChangeTime + 1000 * displayModeTimeout && currentMode != newMode) {
-		newMode = currentMode;
-		firstChange = true;
-		revertLcd();
+	if (getSettingChanged(MODE_MAIN, 2)) {
+		setBrightness();
 	}
-	//
-	switch (currentMode) {
-		case 0: mode_tron(firstRun); break;
+
+	// Timeout:  If we have exceeded the timeout, and we are not already on the 
+	// current mode, then reset the display
+	if (
+		millis() > displayModeChangeTime + 1000 * displayModeTimeout 
+		&& getSetting(MODE_MAIN, 1) != getSetting(MODE_MAIN, 0)
+	) {
+		setSetting(MODE_MAIN, 1, getSetting(MODE_MAIN, 0));
+		writeDisplay();
+	}
+
+	switch (getSetting(MODE_MAIN, 0)) {
+		/*case 0: mode_tron(firstRun); break;
 		case 1: mode_fixed(firstRun); break;
 		case 2: mode_falling(firstRun); break;
 		case 3: mode_rainbow(firstRun); break;
 		case 4: mode_sparkles(firstRun, false); break;
 		case 5: mode_sparkles(firstRun, true); break;
-		case 6: mode_volume(firstRun); break;
+		case 6: mode_volume(firstRun); break;*/
 	}
 	firstRun = false;
 }
@@ -167,25 +137,12 @@ void changeModeInterrupt()
 	sei();
 }
 
-void setBrightness(boolean firstRun) {
-	static long oldPosition = 0;
-	long newPosition =  dialBrightness.read();
-	if (newPosition % 4 == 0 && newPosition != oldPosition || firstRun) {
-		int dir = (newPosition - oldPosition) / 4; 
-		oldPosition = newPosition;
-		brightness += 5 * dir;
-		brightness = constrain(brightness, 0, 150);
-		setSetting(GLOBAL_SETTINGS, 2, brightness);
-		char string[16];
-		sprintf(string, "%s %u", modeNames[currentMode], brightness); 
-		printLcd(0, string);
-				
-		LEDS.setBrightness(brightness);
-		LEDS.show();
-	}
+void setBrightness() {
+	LEDS.setBrightness(getSetting(MODE_MAIN, 2));
+	LEDS.show();
+}
 	
 
-}
 
 
 

@@ -3,16 +3,17 @@
 #ifndef _UTILS_h
 #define _UTILS_h
 
-#include "Arduino.h"
-#include "settings.h"
+#include <Arduino.h>
 #include <stdarg.h>
 #include <eeprom.h>
-#include "rgb_lcd.h"
+#include <rgb_lcd.h>
+#include <Encoder.h>
+
+#include "settings.h";
 
 extern rgb_lcd lcd;
 
-
-char* p(char *fmt, ... );
+void p(char *fmt, ... );
 void EEPROMWriteInt(int p_address, int p_value);
 unsigned int EEPROMReadInt(int p_address);
 void EEPROMWriteArray(int data[NUM_MODES * SETTINGS_PER_MODE]);
@@ -24,6 +25,11 @@ void saveLcd();
 void revertLcd();
 int getDialOne();
 int getDialTwo();
-
+void readDials();
+long readDial(Encoder *dial);
+int getSettingChanged(int mode, int setting);
+char* getSettingName(int mode, int setting);
+void writeDisplay();
+char* getModeName(int mode);
 #endif
 

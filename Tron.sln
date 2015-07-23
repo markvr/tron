@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tron", "Tron.vcxproj", "{57C1C169-25DD-4358-B1E7-31ECBEBDE514}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rotarytesting", "C:\Users\mark\Documents\Arduino\rotarytesting\rotarytesting.vcxproj", "{E1E67671-7C7F-4F37-BFE3-5562B1B14498}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -15,6 +17,10 @@ Global
 		{57C1C169-25DD-4358-B1E7-31ECBEBDE514}.Debug|Win32.Build.0 = Debug|Win32
 		{57C1C169-25DD-4358-B1E7-31ECBEBDE514}.Release|Win32.ActiveCfg = Release|Win32
 		{57C1C169-25DD-4358-B1E7-31ECBEBDE514}.Release|Win32.Build.0 = Release|Win32
+		{E1E67671-7C7F-4F37-BFE3-5562B1B14498}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E1E67671-7C7F-4F37-BFE3-5562B1B14498}.Debug|Win32.Build.0 = Debug|Win32
+		{E1E67671-7C7F-4F37-BFE3-5562B1B14498}.Release|Win32.ActiveCfg = Release|Win32
+		{E1E67671-7C7F-4F37-BFE3-5562B1B14498}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
