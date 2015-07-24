@@ -117,22 +117,24 @@ void setDefaults(){
 
 void setSetting(int mode, int setting, int val) {
 	p("Setting mode %u, setting % u to %u \n", mode, setting, val);
-	//EEPROMWriteInt(((mode * SETTINGS_PER_MODE) + setting) * 2, val);
-	settingsVals[(mode * SETTINGS_PER_MODE) + setting] = val;
+	EEPROMWriteInt(((mode * SETTINGS_PER_MODE) + setting) * 2, val);
+//	settingsVals[(mode * SETTINGS_PER_MODE) + setting] = val;
 }
 
 int getSetting(int mode, int setting) {
-	//return EEPROMReadInt(((mode * SETTINGS_PER_MODE) + setting) * 2);
-	return settingsVals[(mode * SETTINGS_PER_MODE) + setting];
+	return EEPROMReadInt(((mode * SETTINGS_PER_MODE) + setting) * 2);
+//	return settingsVals[(mode * SETTINGS_PER_MODE) + setting];
 }
 
 int getModeSetting(int mode, int setting) {
-	return settingsVals[((mode + 1) * SETTINGS_PER_MODE) + setting + 1];
+	return getSetting(mode + 1, setting + 1);
+//		settingsVals[((mode + 1) * SETTINGS_PER_MODE) + setting + 1];
 }
 
 void setModeSetting(int mode, int setting, int val) {
-	p("Setting mode %u, setting % u to %u \n", mode, setting, val);
-	settingsVals[( (mode + 1) * SETTINGS_PER_MODE) + (setting + 1)] = val;
+//	p("Setting mode %u, setting % u to %u \n", mode, setting, val);
+	setSetting(mode + 1, setting + 1, val);
+//	settingsVals[( (mode + 1) * SETTINGS_PER_MODE) + (setting + 1)] = val;
 }
 
 int getSettingChanged(int mode, int setting) {
