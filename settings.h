@@ -3,7 +3,7 @@
 #ifndef _SETTINGS_h
 #define _SETTINGS_h
 
-#define DEBUG false
+#define DEBUG true
 #define MAX_BRIGHTNESS 255
 #define MODE_PIN 12
 #define NUM_MODES 5

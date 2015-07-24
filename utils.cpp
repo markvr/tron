@@ -21,10 +21,10 @@ value	[0..SETTINGS_PER_MODE][1*SETTINGS_PER_MODE + 1..1*SETTINGS_PER_MODE + SETT
 
 It's contents are as follows:
 								settings
-				0							1					2
-		0	currentMode					potentialMode		brightness
-modes	1	currentDisplayedSetting		Setting 0 Value		Setting 1 Value
-		2
+											0					1
+global		currentMode					potentialMode		brightness
+modes	0	currentDisplayedSetting		Setting 0 Value		Setting 1 Value
+		1
 
 mode=0 stores "global" settings which are:
 	currentMode - the current mode we in
@@ -35,13 +35,12 @@ mode=0 stores "global" settings which are:
 */
 
 char* modeNames[] = {
-	"1 Tron",
-	"2 Fixed",
-	"3 Falling",
-	"4 Rainbow",
-	"5 Sparkles",
-	"6 Spkls Rnbw",
-	"7 Volume"
+	"1 Fixed",
+	"2 Falling",
+	"3 Rainbow",
+	"4 Sparkles",
+	"5 Spkls Rnbw",
+	"6 Volume"
 };
 
 char* settingNames[NUM_MODES][SETTINGS_PER_MODE] = {
@@ -128,16 +127,17 @@ char* getModeName(int num) {
 	return modeNames[num];
 }
 
+
 void writeDisplay() {
 	int mode = getSetting(MODE_MAIN, 0);
 	int brightness = getSetting(MODE_MAIN, 2);
-	int setting = getSetting(mode, 0);
-	int settingValue = getSetting(mode, setting + 1);
+	int setting = getSetting(mode + 1, MODE_SETTING);
+	int settingValue = getSetting(mode  + 1, setting + 1);
 	p("%u %u %u %u\n", mode, brightness, setting, settingValue);
 	char string[16];
 	sprintf(string, "%-13s%3u", modeNames[mode], brightness);
 	printLcd(0, string);
-	sprintf(string, "%-13s%3u", getSettingName(mode, setting), getSetting(mode, setting + 1));
+	sprintf(string, "%-13s%3u", getSettingName(mode, setting), settingValue);
 	printLcd(1, string);
 }
 
@@ -156,6 +156,7 @@ void readDials() {
 		p("position: %u\n", position);
 		settingChanged[MODE_MAIN][2] = true;
 		setSetting(MODE_MAIN, 2, constrain(getSetting(MODE_MAIN, 2) + 10 * position, 0, MAX_BRIGHTNESS));
+		writeDisplay();
 	}
 
 	// Setting Type
@@ -164,12 +165,11 @@ void readDials() {
 		int currentMode = getSetting(MODE_MAIN, 0);
 		// We set/get the current value for which setting is being displayed
 		// for each mode in MODE_SETTING (=0) on the modes settings
-		int newSetting = getSetting(currentMode, MODE_SETTING) + position;
-		int settingNumber = constrain(newSetting, 0, settingCounts[currentMode] - 1);
-		p("mode: %u, newSetting %d, settingCounts %d, settingNumber %u\n", currentMode, newSetting, settingCounts[currentMode], settingNames[currentMode][newSetting]);
-		Serial.println(settingNames[currentMode][settingNumber]);
-		Serial.println(settingNumber);
-		setSetting(currentMode, MODE_SETTING, settingNumber);
+		int newSetting = getSetting(currentMode + 1, MODE_SETTING) + position;
+		newSetting = constrain(newSetting, 0, settingCounts[currentMode] - 1);
+		p("mode: %u, newSetting %d, \n", currentMode, newSetting );
+
+		setSetting(currentMode + 1, MODE_SETTING, newSetting);
 		writeDisplay();
 	}
 
@@ -177,11 +177,11 @@ void readDials() {
 	position = readDial(&dialTwo);
 	if (position != 0) {
 		int mode = getSetting(MODE_MAIN, 0);
-		int settingNumber = getSetting(mode, MODE_SETTING);
+		int settingNumber = getSetting(mode + 1, MODE_SETTING);
 		int min = settingSettings[mode][settingNumber][0];
 		int max = settingSettings[mode][settingNumber][1];
 		int loop = settingSettings[mode][settingNumber][2];
-		int newValue = getSetting(mode, settingNumber + 1) + position;
+		int newValue = getSetting(mode + 1, settingNumber + 1) + position;
 
 		if (loop == 1) {
 			if (newValue < min) newValue = max;
@@ -191,7 +191,7 @@ void readDials() {
 		}
 		// +1 because setting 0 is stored in position 1 in the array
 		// (position 0 is the setting being currently displayed)
-		setSetting(mode, settingNumber + 1, newValue);
+		setSetting(mode + 1, settingNumber + 1, newValue);
 		writeDisplay();
 	}
 }
@@ -216,7 +216,6 @@ void printLcd(int line, char *text) {
 	lcd.setCursor( 0, line );
 	lcd.print("                ");
 	lcd.setCursor( 0, line );
-	strcpy(currentLcdLines[line], text);
 	lcd.print(text);
 }
 	

@@ -5,7 +5,6 @@
 #include "mode_sparkles.h"
 #include "mode_falling.h"
 #include "mode_rainbow.h"
-#include "mode_tron.h"
 #include "mode_volume.h"
 #include "utils.h"
 
@@ -94,6 +93,7 @@ void loop() {
 		writeDisplay();
 		// Reset brightness to normal in case a mode boosted it
 		setBrightness();
+		changeModeFlag = false;
 	}
 	
 	// The mode dial has been changed
@@ -118,13 +118,12 @@ void loop() {
 	}
 
 	switch (getSetting(MODE_MAIN, 0)) {
-		/*case 0: mode_tron(firstRun); break;
-		case 1: mode_fixed(firstRun); break;
-		case 2: mode_falling(firstRun); break;
-		case 3: mode_rainbow(firstRun); break;
-		case 4: mode_sparkles(firstRun, false); break;
-		case 5: mode_sparkles(firstRun, true); break;
-		case 6: mode_volume(firstRun); break;*/
+	/*	case 0: mode_fixed(firstRun); break;
+		case 1: mode_falling(firstRun); break;
+		case 2: mode_rainbow(firstRun); break;
+		case 3: mode_sparkles(firstRun, false); break;
+		case 4: mode_sparkles(firstRun, true); break;
+		case 5: mode_volume(firstRun); break; */
 	}
 	firstRun = false;
 }
