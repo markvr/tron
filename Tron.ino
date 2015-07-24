@@ -65,8 +65,8 @@ void setup() {
 	
 
 	// If we cock up the settings and save them to the EEProm in such a way the 
-	// Teensy crashes on boot, this it the get-out-jail card!
-	// Press and hold the mode dial btn and turn it on.
+	// Teensy crashes on boot, this is the get-out-jail card!
+	// Press and hold the mode dial btn and turn it on to reset to defaults.
 	if (digitalRead(MODE_PIN) == LOW) {
 		clearEeprom();
 		setDefaults();
@@ -74,8 +74,13 @@ void setup() {
 	}
 	
 	setBrightness();
+	if (DEBUG) {
+		Serial.begin(9600);
+	}
 
-	Serial.begin(9600);
+	// Need a small delay here otherwise the Teensy crashes on boot,
+	// but only on the fixed mode for some reason.
+	delay(100);
 }
 
 
