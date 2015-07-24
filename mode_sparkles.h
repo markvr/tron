@@ -1,1 +1,1 @@
-void mode_sparkles(bool, bool);
+void mode_sparkles(bool, int);

@@ -37,18 +37,31 @@ mode=0 stores "global" settings which are:
 char* modeNames[] = {
 	"1 Fixed",
 	"2 Falling",
-	"3 Rainbow",
-	"4 Sparkles",
+	"3 Spkls fxd",
+	"4 Spkls chn",
 	"5 Spkls Rnbw",
-	"6 Volume"
+	"6 Rainbow"
 };
 
 char* settingNames[NUM_MODES][SETTINGS_PER_MODE] = {
 	{ "1 hue", "2 saturation", "", "" },				// Fixed
-	{ "1 length", "2 speed", "3 hue", "4 saturation" },		// Falling
-	{ "1 number", "2 speed", "3 hue", "4 saturation" },		// Sparkles
+	{ "1 length", "2 speed", "3 hue", "4 saturation" },	// Falling
+	{ "1 number", "2 speed", "3 hue", "4 saturation" },	// Sparkles fixed
+	{ "1 number", "2 speed", "3 chnge spd", "" },		// Sparkles changing
 	{ "1 number", "2 speed", "", "" },					// Sparkles Rainbow
 	{ "1 density", "2 speed", "", "" }					// Rainbow
+};
+
+
+// Define the settings that apply to each setting :)
+// This is [min value, max value, loop around, default]
+int settingSettings[NUM_MODES][SETTINGS_PER_MODE][4] = {
+	{ { 0, 25, 1, 16},				{ 0, 25, 0, 25 },	{}, {} },	
+	{ { 0, 10, 0, 10 },				{ 0, 10, 0, 5},		{ 0, 25, 1, 16}, { 0, 25, 0, 25 } },
+	{ { 0, NUM_LEDS / 10, 0, 25},	{ 0, 10, 5, 3},		{ 0, 25, 1, 0}, { 0, 25, 0, 25 } },
+	{ { 0, NUM_LEDS / 10, 0, 25 },	{ 0, 10, 0, 3},		{0, 10, 0, 1},	{} },
+	{ { 0, NUM_LEDS / 10, 0, 25 },	{ 0, 10, 0, 5 },	{}, {} },
+	{ { 0, 30, 0, 15 },				{ 0, 10, 0, 9 },	{}, {} },
 };
 
 // How many above settings are needed for each mode?
@@ -56,19 +69,11 @@ int settingCounts[] = {
 	2,
 	4,
 	4,
+	3,
 	2,
 	2
 };
 
-// Define the settings that apply to each setting :)
-// This is [min value, max value, loop around]
-int settingSettings[NUM_MODES][SETTINGS_PER_MODE][3] = {
-	{ { 0, 255, 1 }, { 0, 255, 0 }, {}, {} },
-	{ { 0, 10, 0 }, { 0, 10, 0 }, { 0, 255, 1 }, { 0, 255, 0 } },
-	{ { 0, 30, 0 }, { 0, 10, 0 }, { 0, 255, 1 }, { 0, 255, 0 } },
-	{ { 0, 30, 0 }, { 0, 10, 0 }, {}, {} },
-	{ { 0, 10, 0 }, { 0, 10, 0 }, {}, {} }
-};
 
 
 
@@ -101,6 +106,14 @@ unsigned int EEPROMReadInt(int p_address)
 	return ((lowByte << 0) & 0xFF) + ((highByte << 8) & 0xFF00);
 }
 
+void setDefaults(){
+	setSetting(MODE_MAIN, 2, 10);	//brightness
+	for (int mode = 0; mode < NUM_MODES; mode++) {
+		for (int setting = 0; setting < settingCounts[mode]; setting++) {
+			setModeSetting(mode, setting, settingSettings[mode][setting][3]);
+		}
+	}
+}
 
 void setSetting(int mode, int setting, int val) {
 	p("Setting mode %u, setting % u to %u \n", mode, setting, val);
@@ -111,6 +124,15 @@ void setSetting(int mode, int setting, int val) {
 int getSetting(int mode, int setting) {
 	//return EEPROMReadInt(((mode * SETTINGS_PER_MODE) + setting) * 2);
 	return settingsVals[(mode * SETTINGS_PER_MODE) + setting];
+}
+
+int getModeSetting(int mode, int setting) {
+	return settingsVals[((mode + 1) * SETTINGS_PER_MODE) + setting + 1];
+}
+
+void setModeSetting(int mode, int setting, int val) {
+	p("Setting mode %u, setting % u to %u \n", mode, setting, val);
+	settingsVals[( (mode + 1) * SETTINGS_PER_MODE) + (setting + 1)] = val;
 }
 
 int getSettingChanged(int mode, int setting) {

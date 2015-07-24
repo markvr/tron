@@ -10,8 +10,8 @@
 extern CRGB leds[NUM_LEDS];
 
 void mode_fixed(bool firstRun) {
-	int hue = getSetting(MODE_FIXED,1);
-	int sat = getSetting(MODE_FIXED,2);
+	int hue = getModeSetting(MODE_FIXED,0) * 10;
+	int sat = getModeSetting(MODE_FIXED,1) * 10;
 	for(int i = 0; i < NUM_LEDS; i++) {
 		leds[i] = CHSV( hue, sat , 255);
 	}

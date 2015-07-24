@@ -20,6 +20,9 @@ void EEPROMWriteArray(int data[NUM_MODES * SETTINGS_PER_MODE]);
 void EEPROMReadArray(int *buf);
 void setSetting(int mode, int setting, int val);
 int getSetting(int mode, int setting);
+void setModeSetting(int mode, int setting, int val);
+int getModeSetting(int mode, int setting);
+
 void printLcd(int line, char *text);
 void saveLcd();
 void revertLcd();
@@ -31,5 +34,6 @@ int getSettingChanged(int mode, int setting);
 char* getSettingName(int mode, int setting);
 void writeDisplay();
 char* getModeName(int mode);
+void setDefaults();
 #endif
 

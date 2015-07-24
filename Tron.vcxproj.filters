@@ -33,9 +33,6 @@
     <ClCompile Include="mode_sparkles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mode_tron.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="mode_volume.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -60,9 +57,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mode_sparkles.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mode_tron.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mode_volume.h">

@@ -69,11 +69,13 @@ void setup() {
 	// Press and hold the mode dial btn and turn it on.
 	if (digitalRead(MODE_PIN) == LOW) {
 		clearEeprom();
+		setDefaults();
+		while (digitalRead(MODE_PIN) == LOW) {}
 	}
 	
 	setBrightness();
+
 	Serial.begin(9600);
-	
 }
 
 
@@ -118,12 +120,12 @@ void loop() {
 	}
 
 	switch (getSetting(MODE_MAIN, 0)) {
-	/*	case 0: mode_fixed(firstRun); break;
+		case 0: mode_fixed(firstRun); break;
 		case 1: mode_falling(firstRun); break;
-		case 2: mode_rainbow(firstRun); break;
-		case 3: mode_sparkles(firstRun, false); break;
-		case 4: mode_sparkles(firstRun, true); break;
-		case 5: mode_volume(firstRun); break; */
+		case 2: mode_sparkles(firstRun, 0); break;
+		case 3: mode_sparkles(firstRun, 1); break;
+		case 4: mode_sparkles(firstRun, 2); break;
+		case 5: mode_rainbow(firstRun); break;
 	}
 	firstRun = false;
 }

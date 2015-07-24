@@ -9,18 +9,18 @@
 extern rgb_lcd lcd;
 extern CRGB leds[NUM_LEDS];
 
-void mode_sparkles(bool firstRun, bool rainbow) {
+// mode: 0 = fixed, 1 = slowly colour changing, 2 = random rainbow
+void mode_sparkles(bool firstRun, int mode) {
 	static long lastUpdate = 0;
-	const int hue = getSetting(MODE_FIXED,1);	// Get the hue from the "fixed" mode.
-	bool displayChanged = false;
-
-	const int changeByNumber = 10;
-
-	int numLit = getSetting(MODE_SPARKLES,1);	// Number of LEDs that are lit at a time
-	if (numLit < 0 || numLit > NUM_LEDS) numLit = 0;
-
-	int speed = getSetting(MODE_SPARKLES,2);
-	if (speed < 1 || speed > 10) speed = 1;
+	static int numLit = 0;
+	static unsigned int hue = 0;
+	int hueChangeSpeed = 1;
+	int newNumLit = getModeSetting(MODE_SPARKLES + mode, 0) * 10;	
+	int speed = getModeSetting(MODE_SPARKLES + mode, 1);
+	int sat = 255;
+	if (mode == 0) {
+		int sat = getModeSetting(MODE_SPARKLES, 3) * 10;
+	}
 	
 	// LEDs that are lit.  The LED numbers are in bins 0..numLit in a random order
 	static uint16_t lit[NUM_LEDS];
@@ -39,6 +39,7 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 	
 	if (firstRun) {
 		// Reset everything
+		numLit = newNumLit;
 		for (int i = 0; i < NUM_LEDS; i++) {
 			unlit[i] = i;
 			lit[i] = 0;
@@ -54,33 +55,43 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 			int bin = random16(NUM_LEDS - i);	// Choose an unlit LED from the remaining ones (NUM_LEDS - i)
 			lit[i] = unlit[bin];				// Move it to the lit array
 			phase[unlit[bin]] = random8(64) * 512; // Give it a random start value that is a multiple of 512
-			if (rainbow) {
+			switch (mode) {
+			case 0:
+			case 1:
+				hues[unlit[bin]] = getModeSetting(MODE_SPARKLES, 2) * 10;
+				break;
+			case 2:
 				hues[unlit[bin]] = random8();
-				} else {
-				hues[unlit[bin]] = hue;
+				break;
 			}
-			// Shift the rest of the array down
 			for (int j = bin; j < NUM_LEDS - 1; j++) {
 				unlit[j] = unlit[j+1];
 			}
 			unlit[NUM_LEDS - 1] = 0;
 		}
 	}
-	
+
 	// "Number Lit" dial
-	int numLitChange = getDialOne();
-	if (numLitChange && (NUM_LEDS > (changeByNumber * numLitChange))) { // Stop going > NUM_LEDS
-		if (numLitChange == 1) {	// Going Up
-			for (int i = 0; i < changeByNumber; i++) {	// Increase by 10 at a time
+	if (numLit != newNumLit) {
+		int difference = newNumLit - numLit;
+		if (difference > 0) {	// Going Up
+			for (int i = 0; i < difference; i++) {
 				if (numLit < NUM_LEDS) {	
 					int bin = random16(NUM_LEDS - numLit);	// Choose a random unlit led
 					lit[numLit] = unlit[bin];		// Move it to the lit array
 					phase[unlit[bin]] =  random8(64) * 512; //randomize it's value
-					if (rainbow) {
-						hues[unlit[bin]] = random8();
-					} else {
+					switch (mode) {
+					case 0:
+						hues[unlit[bin]] = getModeSetting(MODE_SPARKLES, 2) * 10;
+						break;
+					case 1:
 						hues[unlit[bin]] = hue;
+						break;
+					case 2:
+						hues[unlit[bin]] = random8();
+						break;
 					}
+
 					// and remove it from the unlit array
 					for (int j = bin; j < NUM_LEDS - 1; j++) {
 						unlit[j] = unlit[j+1];
@@ -89,7 +100,7 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 				}
 			}
 		} else {	// going down...
-			for (int i = 0; i < changeByNumber; i++) {
+			for (int i = 0; i < difference; i++) {
 				if (numLit > 0) {  // going down
 					unlit[NUM_LEDS - numLit] = lit[numLit]; // move the top most "lit" led to the unlit array
 					phase[lit[numLit]] = 0;	// and turn it out etc.
@@ -98,25 +109,6 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 				}
 			}
 		}
-		
-		setSetting(MODE_SPARKLES,1, numLit);
-		displayChanged = true;
-	}
-	
-	int speedChange = getDialTwo();
-	if (speedChange) {
-		speed += speedChange;
-		speed = constrain(speed, 1, 10);
-		setSetting(MODE_SPARKLES,2,speed);
-		displayChanged = true;
-	}
-	
-	
-	
-	if (displayChanged || firstRun) {
-		char string[16];
-		sprintf(string, "lit:%i spd:%i ", numLit, speed);
-		printLcd(1, string);
 	}
 	
 	
@@ -124,8 +116,7 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 		memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
 		lastUpdate = millis();
 		for (int i = 0; i < numLit; i++) {
-			//leds[lit[i]] = CRGB(0, 0, sin16(brightness[lit[i]]) >> 8);
-			leds[lit[i]] = CHSV(hues[lit[i]], 255, sin16(phase[lit[i]]) >> 8);
+			leds[lit[i]] = CHSV(hues[lit[i]], sat, sin16(phase[lit[i]]) >> 8);
 			phase[lit[i]] += 2048;
 			if (phase[lit[i]] > 32767) { // One of them has gone out,
 				// We randomly choose a new LED from the unlit array, and swap it with the lit one that has gone out.
@@ -135,12 +126,19 @@ void mode_sparkles(bool firstRun, bool rainbow) {
 				lit[i] = unlit[bin]; // And swap them over
 				unlit[bin] = temp;
 				phase[lit[i]] = 0;	// Set the new value to 0;
-				if (rainbow) {
+				switch (mode) {
+				case 0:
+					hues[lit[i]] = getModeSetting(MODE_SPARKLES, 2) * 10;
+					break;
+				case 1:
+					hue = hue + getModeSetting(MODE_SPARKLES + 1, 2);
+					if (hue > 2048) hue = 0;
+					hues[lit[i]] = hue >> 3;
+					break;
+				case 2:
 					hues[lit[i]] = random8();
-				} else {
-					hues[lit[i]] = hue;
+					break;
 				}
-				
 			}
 		}
 
