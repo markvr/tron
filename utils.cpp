@@ -13,18 +13,23 @@ char currentLcdLines[2][16];
 char savedLcdLines[2][16];
 
 /*
-The "settings" is a 2D array of [modes]x[settings]
+The "settings" is a 2D array of [modes + 1]x[settings + 1]
 It is packed into a 1D in blocks of SETTINGS_PER_MODE
 i.e. 
 mode			0											1
 value	[0..SETTINGS_PER_MODE][1*SETTINGS_PER_MODE + 1..1*SETTINGS_PER_MODE + SETTINGS_PER_MODE] etc
 
-It's contents are as follows:
-								settings
-											0					1
-global		currentMode					potentialMode		brightness
-modes	0	currentDisplayedSetting		Setting 0 Value		Setting 1 Value
-		1
+It's a bit confusing and needs reworking, but essentially the first row (i.e. 0) is global settings
+Then row 1 =  settings for mode 0
+The first column (i.e. 0) of each row (except the first) stores the currently
+displayed setting number.
+Then col 1 = setting value 0.
+Hence all the "mode + 1" everywhere...
+
+[0]="setting"           [1]="setting0"         [2]="setting 1" ...
+[0]="global"     currentMode             potentialMode           brightness
+[1]="mode0"     currentSetting          Setting 0 Value        Setting 1 Value
+[2]="mode1" ...
 
 mode=0 stores "global" settings which are:
 	currentMode - the current mode we in
