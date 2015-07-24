@@ -6,7 +6,7 @@
 #define DEBUG true
 #define MAX_BRIGHTNESS 255
 #define MODE_PIN 12
-#define NUM_MODES 6
+#define NUM_MODES 7
 #define SETTINGS_PER_MODE 5
 #define NUM_LEDS 297
 
@@ -21,8 +21,8 @@
 #define MODE_SPARKLES_CHNG 3
 #define MODE_SPARKLES_RNBW 4
 #define MODE_RAINBOW 5
-
-#define MODE_VOLUME 6
+#define MODE_FIRE 6
+#define MODE_VOLUME 10
 //#define MODE_FIRE 6
 
 

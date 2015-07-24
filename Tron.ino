@@ -5,7 +5,8 @@
 #include "mode_sparkles.h"
 #include "mode_falling.h"
 #include "mode_rainbow.h"
-#include "mode_volume.h"
+//#include "mode_volume.h"
+#include "mode_fire.h"
 #include "utils.h"
 
 // For some (currently) unknown reason, all the imports used in other files also
@@ -54,14 +55,13 @@ void setup() {
 	pinMode(MODE_PIN, INPUT_PULLUP);
 	
 	attachInterrupt(MODE_PIN, changeModeInterrupt, RISING);
-	
-	LEDS.addLeds<WS2811, 7>(leds, 0, 66); // leg1
-	LEDS.addLeds<WS2811, 8>(leds, 66, 66); //leg 2
- 	LEDS.addLeds<WS2811, 20>(leds, 132, 37); // front left
- 	LEDS.addLeds<WS2811, 14>(leds, 169, 37); // front right
- 	LEDS.addLeds<WS2811, 21>(leds, 206, 35); //right arm
- 	LEDS.addLeds<WS2811, 2>(leds, 241, 26); // left arm
- 	LEDS.addLeds<WS2811, 5>(leds, 267, 31); //back
+	LEDS.addLeds<WS2811, 7, GRB>(leds, 0, 66).setCorrection(TypicalLEDStrip); // leg1
+	LEDS.addLeds<WS2811, 8, GRB>(leds, 66, 66).setCorrection(TypicalLEDStrip); //leg 2
+	LEDS.addLeds<WS2811, 20, GRB>(leds, 132, 37).setCorrection(TypicalLEDStrip); // front left
+	LEDS.addLeds<WS2811, 14, GRB>(leds, 169, 37).setCorrection(TypicalLEDStrip); // front right
+	LEDS.addLeds<WS2811, 21, GRB>(leds, 206, 35).setCorrection(TypicalLEDStrip); //right arm
+	LEDS.addLeds<WS2811, 2, GRB>(leds, 241, 26).setCorrection(TypicalLEDStrip); // left arm
+	LEDS.addLeds<WS2811, 5, GRB>(leds, 267, 31).setCorrection(TypicalLEDStrip); //back
 	
 
 	// If we cock up the settings and save them to the EEProm in such a way the 
@@ -131,6 +131,7 @@ void loop() {
 		case 3: mode_sparkles(firstRun, 1); break;
 		case 4: mode_sparkles(firstRun, 2); break;
 		case 5: mode_rainbow(firstRun); break;
+		case 6: mode_fire(); break;
 	}
 	firstRun = false;
 }
