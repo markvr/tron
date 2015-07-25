@@ -77,6 +77,7 @@
     <ClCompile Include="LocalAudio.cpp" />
     <ClCompile Include="mode_chasing.cpp" />
     <ClCompile Include="mode_falling.cpp" />
+    <ClCompile Include="mode_fire.cpp" />
     <ClCompile Include="mode_fixed.cpp" />
     <ClCompile Include="mode_rainbow.cpp" />
     <ClCompile Include="mode_sparkles.cpp" />
@@ -93,6 +94,7 @@
     <ClInclude Include="mode_falling.h">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClInclude Include="mode_fire.h" />
     <ClInclude Include="mode_fixed.h">
       <FileType>CppCode</FileType>
     </ClInclude>

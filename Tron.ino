@@ -5,8 +5,9 @@
 #include "mode_sparkles.h"
 #include "mode_falling.h"
 #include "mode_rainbow.h"
-//#include "mode_volume.h"
+#include "mode_volume.h"
 #include "mode_fire.h"
+#include "LocalAudio.h"
 #include "utils.h"
 
 // For some (currently) unknown reason, all the imports used in other files also
@@ -100,6 +101,8 @@ void loop() {
 		writeDisplay();
 		// Reset brightness to normal in case a mode boosted it
 		setBrightness();
+		LocalAudio::stop();
+		
 		changeModeFlag = false;
 	}
 	
@@ -132,6 +135,7 @@ void loop() {
 		case 4: mode_sparkles(firstRun, 2); break;
 		case 5: mode_rainbow(firstRun); break;
 		case 6: mode_fire(); break;
+		case 7: mode_volume(firstRun); break;
 	}
 	firstRun = false;
 }

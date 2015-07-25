@@ -4,7 +4,7 @@
 #include "Arduino.h"
 #include "utils.h"
 
-#define FFT_SIZE 128
+#define FFT_SIZE 256
 
 class LocalAudio
 {
@@ -19,11 +19,11 @@ class LocalAudio
 	static volatile int  volume;
 
  public:
- 	static int samples[];
+	static volatile int samples[];
 	static void init ();
 	static void start();
 	static void stop();
-	static int getVolume();
+	static unsigned int getVolume();
 };
 
 

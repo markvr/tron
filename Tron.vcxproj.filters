@@ -42,6 +42,9 @@
     <ClCompile Include="LocalAudio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mode_fire.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mode_chasing.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Visual Micro\.Tron.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mode_fire.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

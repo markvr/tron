@@ -6,8 +6,7 @@ int LocalAudio::sampleCounter = 0;
 bool LocalAudio::samplingDone;
 int LocalAudio::sampleRate = 9000;
 int LocalAudio::inputPin = A8;  // Input ADC pin for LocalAudio data.
-int LocalAudio::samples[FFT_SIZE];
-volatile int LocalAudio::volume;
+volatile int LocalAudio::samples[FFT_SIZE];
 
 void LocalAudio::init() {
 	analogReadResolution(10); // Bits of resolution for the ADC.
@@ -21,17 +20,11 @@ void LocalAudio::start() {
 }
 
 void LocalAudio::callback() {
+	cli();
 	samples[sampleCounter] = analogRead(inputPin);
 	sampleCounter++;
-	if (sampleCounter == FFT_SIZE) {
-		// Get the RMS value - it's between approx 10 and 200
-		float floatVolume = 0;
-		for (int i = 0; i < FFT_SIZE; i++) {
-			floatVolume += ( (samples[i] - 512) * (samples[i] - 512));
-		}
-		volume = (int)sqrt(floatVolume / FFT_SIZE);
-		sampleCounter = 0;
-	}
+	if (sampleCounter == FFT_SIZE) sampleCounter = 0;
+	sei();
 }
 
 void LocalAudio::stop() {
@@ -40,7 +33,20 @@ void LocalAudio::stop() {
 	
 }
 
-int LocalAudio::getVolume() {
+unsigned int LocalAudio::getVolume() {
+	unsigned int volume;
+	// Get the RMS value - it's between approx 10 and 200
+	float floatVolume = 0;
+	for (int i = 0; i < FFT_SIZE; i++) {
+	//	p("%u ", samples[i]);
+		floatVolume += ((samples[i] - 512) * (samples[i] - 512));
+	}
+
+	volume = (int)sqrt(floatVolume / FFT_SIZE);
+	//Serial.println();
+	//Serial.println(floatVolume);
+	//Serial.println(volume);
+//	p("\n RMS %.3f int %u \n", floatVolume, volume);
 	return volume;
 }
 

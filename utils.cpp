@@ -1,6 +1,7 @@
 #include "utils.h"
 #include <Encoder.h>
 
+
 extern Encoder dialMode;
 extern Encoder dialBrightness;
 extern Encoder dialOne;
@@ -26,7 +27,7 @@ displayed setting number.
 Then col 1 = setting value 0.
 Hence all the "mode + 1" everywhere...
 
-[0]="setting"           [1]="setting0"         [2]="setting 1" ...
+                    [0]                 [1]="setting0"         [2]="setting 1" ...
 [0]="global"     currentMode             potentialMode           brightness
 [1]="mode0"     currentSetting          Setting 0 Value        Setting 1 Value
 [2]="mode1" ...
@@ -46,7 +47,8 @@ char* modeNames[] = {
 	"4 Spkls chn",
 	"5 Spkls Rnbw",
 	"6 Rainbow",
-	"7 Fire"
+	"7 Fire",
+	"7 Volume"
 };
 
 char* settingNames[NUM_MODES][SETTINGS_PER_MODE] = {
@@ -56,7 +58,8 @@ char* settingNames[NUM_MODES][SETTINGS_PER_MODE] = {
 	{ "1 number", "2 speed", "3 chnge spd", "" },		// Sparkles changing
 	{ "1 number", "2 speed", "", "" },					// Sparkles Rainbow
 	{ "1 density", "2 speed", "", "" },					// Rainbow
-	{ "1 heat",  "2 cooling", "", "" }					// Rainbow
+	{ "1 heat",  "2 cooling", "", "" },					// Fire
+	{ "1 sensitivity", "2 fade", "", "" }				// Volume
 };
 
 
@@ -70,6 +73,7 @@ int settingSettings[NUM_MODES][SETTINGS_PER_MODE][4] = {
 	{ { 0, NUM_LEDS / 10, 0, 25 },	{ 0, 10, 0, 5 },	{}, {} },
 	{ { 0, 30, 0, 15 },				{ 0, 10, 0, 9 },	{}, {} },
 	{ { 0, 30, 0, 15 }, { 0, 10, 0, 9 }, {}, {} },
+	{ { 0, 10, 0, 5 }, { 0, 10, 0, 5 }, {}, {} },
 };
 
 // How many above settings are needed for each mode?
@@ -78,6 +82,7 @@ int settingCounts[] = {
 	4,
 	4,
 	3,
+	2,
 	2,
 	2,
 	2
@@ -180,7 +185,7 @@ void readDials() {
 	if (position != 0) {
 		p("position: %u\n", position);
 		settingChanged[MODE_MAIN][1] = true;
-		setSetting(MODE_MAIN, 1, constrain(getSetting(MODE_MAIN, 1) + position, 0, NUM_MODES));
+		setSetting(MODE_MAIN, 1, constrain(getSetting(MODE_MAIN, 1) + position, 0, NUM_MODES - 1));
 	}
 
 	// Brightness
