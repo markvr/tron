@@ -1,15 +1,5 @@
 #include "settings.h"
 
-#include "mode_fixed.h"
-#include "mode_rainbow.h"
-#include "mode_sparkles.h"
-#include "mode_falling.h"
-#include "mode_rainbow.h"
-#include "mode_volume.h"
-#include "mode_fire.h"
-#include "LocalAudio.h"
-#include "utils.h"
-
 // For some (currently) unknown reason, all the imports used in other files also
 // need to be imported here as well.
 // Otherwise the compiler throws: "fatal error: XXX.h: No such file or directory"
@@ -22,6 +12,19 @@
 //#include <Wire.h>
 //#include <SPI.h>
 //#include <SD.h>
+
+#include "mode_fixed.h"
+#include "mode_rainbow.h"
+#include "mode_sparkles.h"
+#include "mode_falling.h"
+#include "mode_rainbow.h"
+#include "mode_volume.h"
+#include "mode_volume2.h"
+#include "mode_fire.h"
+#include "LocalAudio.h"
+#include "utils.h"
+
+
 
 
 
@@ -81,7 +84,7 @@ void setup() {
 
 	// Need a small delay here otherwise the Teensy crashes on boot,
 	// but only on the fixed mode for some reason.
-	delay(100);
+	delay(1000);
 }
 
 
@@ -136,6 +139,7 @@ void loop() {
 		case 5: mode_rainbow(firstRun); break;
 		case 6: mode_fire(); break;
 		case 7: mode_volume(firstRun); break;
+		case 8: mode_volume2(firstRun); break;
 	}
 	firstRun = false;
 }

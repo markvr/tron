@@ -9,7 +9,13 @@
 extern CRGB leds[NUM_LEDS];
 
 void mode_volume(bool firstRun) {
-	if (firstRun) LocalAudio::start();
+	static int frames = 0;
+	static int lastFrameUpdate = 0;
+	if (firstRun) {
+		LocalAudio::start();
+		frames = 0;
+	}
+	static unsigned int volume = 0;
 	static long lastUpdate = 0;
 	static int maxVolume = 0;
 	int sensitivity = getModeSetting(MODE_VOLUME, 0);
@@ -19,18 +25,34 @@ void mode_volume(bool firstRun) {
 //	const int numRibbons = 23;
 
 	// 267
+	int start = 285;
+	int end = 267;
+	int size = 285 - 267; // = 18
+	if ((millis() - lastUpdate) > 50) {
+		frames++;
+		if (millis() - lastFrameUpdate > 1000) {
+			lastFrameUpdate = millis();
 
-	if( (millis() - lastUpdate) > (100)) {
+			p("fps %u\n", frames);
+			frames = 0;
+		}
 		lastUpdate = millis();
 		memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
 
-		unsigned int volume = LocalAudio::getVolume();
-		volume = sqrt(volume);  // divide by 16
-		Serial.println(volume);
+		unsigned int newVolume = LocalAudio::getVolume(true);
+		if (newVolume > volume) {
+			volume = newVolume;
+		} else {
+			volume = volume * ( (20.0 - (float)fadeRate) / 20.0);
+		}
+
+		int ledCount = volume / size;
+		//Serial.println(volume);
 	
-		for (int i = 285; i > 285 - volume; i--){
+		for (int i = 285; i > 285 - ledCount; i--){
 			leds[i].setHSV(50, 255, 255);
 		}
+
 		// Let the LEDs write in peace
 		LocalAudio::stop();
 		LEDS.show();

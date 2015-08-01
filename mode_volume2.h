@@ -1,0 +1,1 @@
+void mode_volume2(bool);

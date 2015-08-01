@@ -23,7 +23,7 @@ class LocalAudio
 	static void init ();
 	static void start();
 	static void stop();
-	static unsigned int getVolume();
+	static unsigned int getVolume(bool scaled);
 };
 
 

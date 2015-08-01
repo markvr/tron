@@ -82,6 +82,7 @@
     <ClCompile Include="mode_rainbow.cpp" />
     <ClCompile Include="mode_sparkles.cpp" />
     <ClCompile Include="mode_volume.cpp" />
+    <ClCompile Include="mode_volume2.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +108,7 @@
     <ClInclude Include="mode_volume.h">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClInclude Include="mode_volume2.h" />
     <ClInclude Include="settings.h">
       <FileType>CppCode</FileType>
     </ClInclude>
