@@ -11,9 +11,33 @@ extern CRGB leds[NUM_LEDS];
 
 void mode_fire() {
 //	random16_add_entropy(random());
-	const int ribbons[][2] = { { 0, 15 }, { 16, 35 }, { 36, 50 }, { 51, 65 }, { 66, 81 }, { 82, 101 }, { 102, 116 }, { 117, 131 }, { 132, 142 }, { 143, 151 }, { 152, 160 }, { 161, 168 }, { 169, 179 }, { 180, 188 }, { 189, 197 }, { 198, 205 }, { 206, 218 }, { 219, 230 }, { 231, 240 }, { 241, 254 }, { 255, 266 }, { 267, 285 }, { 286, 296 } };
+	const int ribbons[][2] = { 
+		{ 0, 15 }, // upper right leg inside
+		{ 16, 35 }, // upper right leg outside
+		{ 36, 50 }, // lower right leg outside 
+		{ 51, 65 },  // lower right leg inside
+		{ 66, 81 },  // upper left leg inside
+		{ 82, 101 },  // upper left leg outside
+		{ 102, 116 },  // ?? helmet ??
+		{ 117, 131 },   // ?? helmet??
+		{ 132, 142 }, // top left top
+		{ 143, 151 }, // top left bottom
+		{ 152, 160 },  // bottom left top
+		{ 161, 168 }, // bottom left bottom
+		{ 169, 179 },  // top right top
+		{ 180, 188 },  // top right bottom
+		{ 189, 197 },  // bottom right top
+		{ 198, 205 },  // bottom right bottom
+		{ 206, 218 },  // right arm top
+		{ 219, 230 },  // right arm top
+		{ 231, 240 },  // right arm bottom
+		{ 241, 254 },  // left arm top 
+		{ 255, 266 },  // left arm top
+		{ 267, 285 },  // back outside
+		{ 286, 296 }   // back inside
+	};
 //	const int ribbons[][2] = { { 267, 285 } };
-	const int numRibbons = 23;
+	const int numRibbons = 10;
 	static int heat[numRibbons][20];
 	for (int ribbonNumber = 0; ribbonNumber < numRibbons; ribbonNumber++) {
 		int length = ribbons[ribbonNumber][1] - ribbons[ribbonNumber][0];

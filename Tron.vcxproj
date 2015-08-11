@@ -76,6 +76,7 @@
   <ItemGroup>
     <ClCompile Include="LocalAudio.cpp" />
     <ClCompile Include="mode_chasing.cpp" />
+    <ClCompile Include="mode_count.cpp" />
     <ClCompile Include="mode_falling.cpp" />
     <ClCompile Include="mode_fire.cpp" />
     <ClCompile Include="mode_fixed.cpp" />
@@ -92,6 +93,7 @@
     <ClInclude Include="mode_chasing.h">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClInclude Include="mode_count.h" />
     <ClInclude Include="mode_falling.h">
       <FileType>CppCode</FileType>
     </ClInclude>

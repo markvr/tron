@@ -21,6 +21,7 @@
 #include "mode_volume.h"
 #include "mode_volume2.h"
 #include "mode_fire.h"
+#include "mode_count.h"
 #include "LocalAudio.h"
 #include "utils.h"
 
@@ -84,7 +85,7 @@ void setup() {
 
 	// Need a small delay here otherwise the Teensy crashes on boot,
 	// but only on the fixed mode for some reason.
-	delay(1000);
+	delay(250);
 }
 
 
@@ -140,6 +141,7 @@ void loop() {
 		case 6: mode_fire(); break;
 		case 7: mode_volume(firstRun); break;
 		case 8: mode_volume2(firstRun); break;
+		case 9: mode_count(); break;
 	}
 	firstRun = false;
 }

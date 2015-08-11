@@ -48,8 +48,9 @@ char* modeNames[] = {
 	"5 Spkls Rnbw",
 	"6 Rainbow",
 	"7 Fire",
-	"7 Volume",
-	"8 Volume2"
+	"8 Volume",
+	"9 Volume2",
+	"99 count"
 };
 
 char* settingNames[NUM_MODES][SETTINGS_PER_MODE] = {
@@ -60,8 +61,9 @@ char* settingNames[NUM_MODES][SETTINGS_PER_MODE] = {
 	{ "1 number", "2 speed", "", "" },					// Sparkles Rainbow
 	{ "1 density", "2 speed", "", "" },					// Rainbow
 	{ "1 heat",  "2 cooling", "", "" },					// Fire
-	{ "1 sensitivity", "2 fade", "", "" },				// Volume
-	{ "1 sensitivity", "2 fade", "", "" },				// Volume
+	{ "1 sensitivity", "2 fade", "hue", "" },			// Volume
+	{ "1 sensitivity", "2 fade", "", "" },				// Volume2
+	{ "count", "", "", "" },				// Volume2
 };
 
 
@@ -75,8 +77,9 @@ int settingSettings[NUM_MODES][SETTINGS_PER_MODE][4] = {
 	{ { 0, NUM_LEDS / 10, 0, 25 },	{ 0, 10, 0, 5 },	{}, {} },
 	{ { 0, 30, 0, 15 },				{ 0, 10, 0, 9 },	{}, {} },
 	{ { 0, 30, 0, 15 }, { 0, 10, 0, 9 }, {}, {} },
-	{ { 0, 10, 0, 5 }, { 0, 10, 0, 5 }, {}, {} },
+	{ { 0, 10, 0, 5 }, { 0, 10, 0, 5 }, {0,2,0,0}, {} },
 	{ { 0, 10, 0, 1 }, { 0, 10, 0, 5 }, {}, {} },
+	{ { 0, 500, 0, 1 }, {}, {}, {} },
 };
 
 // How many above settings are needed for each mode?
@@ -88,8 +91,9 @@ int settingCounts[] = {
 	2,
 	2,
 	2,
+	3,
 	2,
-	2
+	1,
 };
 
 

@@ -20,8 +20,8 @@ void mode_volume2(bool firstRun) {
 	static unsigned int volume;
 	static unsigned int oldVolume = 0;
 	static long lastUpdate = 0;
-	static int maxVolume = 0;
-	int sensitivity = getModeSetting(MODE_VOLUME2, 0);
+	int maxVolume = 1000 - (100 * getModeSetting(MODE_VOLUME2, 0)) + 1;
+//	int sensitivity = getModeSetting(MODE_VOLUME2, 0);
 	int fadeRate = getModeSetting(MODE_VOLUME2, 1);
 
 	//	const int ribbons[][2] = { { 0, 15 }, { 16, 35 }, { 36, 50 }, { 51, 65 }, { 66, 81 }, { 82, 101 }, { 102, 116 }, { 117, 131 }, { 132, 142 }, { 143, 151 }, { 152, 160 }, { 161, 168 }, { 169, 179 }, { 180, 188 }, { 189, 197 }, { 198, 205 }, { 206, 218 }, { 219, 230 }, { 231, 240 }, { 241, 254 }, { 255, 266 }, { 267, 285 }, { 286, 296 } };
@@ -30,10 +30,10 @@ void mode_volume2(bool firstRun) {
 	const int maxRibbonsPerThreshold = 5;
 	int numThresholds = 4;
 	const int ribbons[][maxRibbonsPerThreshold][2] = {
-		{ { 267, 285 } },
-		{ { 286, 296 } },
-		{ { 206, 218 } },
-		{ { 219, 230 } }
+		{ { 36, 50 }, { 51, 65 }, { 102, 116 }, { 117, 131 } },	 //lower leg
+		{ { 0, 15 }, { 16, 35 }, { 66, 81 }, { 82, 101 } },	// upper leg
+		{ { 152, 160 }, { 161, 168 }, { 189, 197 }, { 198, 205 } },
+		{ { 132, 142 }, { 143, 151 }, { 169, 179 }, {180,188 } }
 	};
 
 	const int red = 0;
@@ -45,10 +45,10 @@ void mode_volume2(bool firstRun) {
 
 	// {volume, colour, num ribbons}
 	 int thresholds[][3] = { 
-		{ 64, green, 1 }, 
-		{ 128, yellow, 1 }, 
-		{ 256, orange, 1 }, 
-		{ 512, red, 1 } 
+		{ 64, green, 4 }, 
+		{ 128, yellow, 4 }, 
+		{ 256, orange, 4 }, 
+		{ 512, red, 4 } 
 	};
 
 	if ((millis() - lastUpdate) > 50) {
@@ -72,11 +72,36 @@ void mode_volume2(bool firstRun) {
 			int startVolume = threshold * volumePerThreshold;
 			int endVolume = (threshold + 1) * volumePerThreshold;
 
+
+			/*volume 96
+				threshold 0, startVolume 0  endVolume 48, brightness 255
+				ribbon 0, startLed 36  endLed 50, brightness 255
+				ribbon 0, startLed 51  endLed 65, brightness 255
+				ribbon 0, startLed 102  endLed 116, brightness 255
+				ribbon 0, startLed 117  endLed 131, brightness 255
+				threshold 1, startVolume 48  endVolume 96, brightness 48
+				ribbon 1, startLed 0  endLed 15, brightness 50
+				ribbon 1, startLed 16  endLed 35, brightness 50
+				ribbon 1, startLed 66  endLed 81, brightness 50
+				ribbon 1, startLed 82  endLed 101, brightness 50
+				threshold 2, startVolume 96  endVolume 144, brightness 0
+				ribbon 2, startLed 152  endLed 160, brightness 50
+				ribbon 2, startLed 161  endLed 168, brightness 50
+				ribbon 2, startLed 189  endLed 197, brightness 50
+				ribbon 2, startLed 198  endLed 205, brightness 50
+				threshold 3, startVolume 144  endVolume 192, brightness 4294967248
+				ribbon 3, startLed 132  endLed 142, brightness 50
+				ribbon 3, startLed 143  endLed 151, brightness 50
+				ribbon 3, startLed 169  endLed 179, brightness 50
+				ribbon 3, startLed 180  endLed 188, brightness 50
+
+*/
+
 			int brightness;
 			if (volume > endVolume) {
 				brightness = 255; 				// set full brightness
-			} else {
-				brightness = volume - startVolume;
+			} else {	// fix brightness fading
+				brightness = 255 - volume - startVolume;
 			}
 			p("\t threshold %u, startVolume %u  endVolume %u, brightness %u\n", threshold, startVolume, endVolume, brightness);
 			if (brightness < 50) brightness = 50;
