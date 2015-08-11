@@ -67,7 +67,7 @@ unsigned int LocalAudio::getVolume(bool scaled) {
 		maxOriginal = max;
 		// If the max and min are to close the sensitivty is too high and noise
 		// dominates. 
-		if ((max - min) < 16) max = min + 16;		
+		if ((max - min) < 64) max = min + 64;		
 		scaledVolume = 256 * (volume - min) / (max - min);
 	}
 
