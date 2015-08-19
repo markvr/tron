@@ -54,10 +54,10 @@ char* modeNames[] = {
 };
 
 char* settingNames[NUM_MODES][SETTINGS_PER_MODE] = {
-	{ "1 hue", "2 saturation", "", "" },				// Fixed
+	{ "1 hue", "2 saturation", "Sparkles", "" },				// Fixed
 	{ "1 length", "2 speed", "3 hue", "4 saturation" },	// Falling
 	{ "1 number", "2 speed", "3 hue", "4 saturation" },	// Sparkles fixed
-	{ "1 number", "2 speed", "3 chnge spd", "" },		// Sparkles changing
+	{ "1 number", "2 speed", "3 chnge spd", "palette" },		// Sparkles changing
 	{ "1 number", "2 speed", "", "" },					// Sparkles Rainbow
 	{ "1 density", "2 speed", "", "" },					// Rainbow
 	{ "1 heat",  "2 cooling", "3 speed", "" },					// Fire
@@ -70,10 +70,10 @@ char* settingNames[NUM_MODES][SETTINGS_PER_MODE] = {
 // Define the settings that apply to each setting :)
 // This is [min value, max value, loop around, default]
 int settingSettings[NUM_MODES][SETTINGS_PER_MODE][4] = {
-	{ { 0, 25, 1, 16},				{ 0, 25, 0, 25 },	{}, {} },	
+	{ { 0, 25, 1, 16},				{ 0, 25, 0, 25 },	{0,10,0,0}, {} },	
 	{ { 0, 10, 0, 10 },				{ 0, 10, 0, 5},		{ 0, 25, 1, 16}, { 0, 25, 0, 25 } },
 	{ { 0, NUM_LEDS / 10, 0, 25},	{ 0, 10, 5, 3},		{ 0, 25, 1, 0}, { 0, 25, 0, 25 } },
-	{ { 0, NUM_LEDS / 10, 0, 25 },	{ 0, 10, 0, 3},		{0, 10, 0, 1},	{} },
+	{ { 0, NUM_LEDS / 10, 0, 25 },	{ 0, 10, 0, 3},		{0, 10, 0, 1},	{0,4,0,0} },
 	{ { 0, NUM_LEDS / 10, 0, 25 },	{ 0, 10, 0, 5 },	{}, {} },
 	{ { 0, 30, 0, 15 },				{ 0, 10, 0, 9 },	{}, {} },
 	{ { 0, 30, 0, 15 }, { 0, 10, 0, 9 }, {0,10,0,5}, {} },
@@ -84,10 +84,10 @@ int settingSettings[NUM_MODES][SETTINGS_PER_MODE][4] = {
 
 // How many above settings are needed for each mode?
 int settingCounts[] = {
-	2,
-	4,
-	4,
 	3,
+	4,
+	4,
+	4,
 	2,
 	2,
 	3,

@@ -22,15 +22,28 @@ void mode_sparkles(bool firstRun, int mode) {
 	static int hueSparklesAdded = 0;
 	// Tracks the current hue colour we are adding
 	static int currentHue = 0;
+	
+	int palettes[][5] = {
+		{0,0,0,0,0},
+		{110,120,130,140,150},		// blue-green
+		{0,15,30,45,60},			//red-yellow
+		{60,70,80,90,100},			//green-yellow
+		{160,180,200,220,240}		// red blue
+	};
 
 	int hueChangeSpeed = 1;
 	int desiredNumLit = getModeSetting(MODE_SPARKLES + mode, 0) * 10;	
 	int speed = getModeSetting(MODE_SPARKLES + mode, 1);
 	int sat = 255;
-	if (mode == 0) {
-		int sat = getModeSetting(MODE_SPARKLES, 3) * 10;
+	int palette = 0;
+	if (mode == 0) {	// fixed colour
+		sat = getModeSetting(MODE_SPARKLES + mode, 3) * 10;
 	}
-	
+	if (mode == 1) {	// changing colour
+		palette = getModeSetting(MODE_SPARKLES + mode, 3);
+	}
+
+
 	// LEDs that are lit.  The LED numbers are in bins 0..numLit in a random order
 	static uint16_t lit[NUM_LEDS];
 	
@@ -66,8 +79,14 @@ void mode_sparkles(bool firstRun, int mode) {
 			phase[unlit[bin]] = random8(64) * 512; // Give it a random start value that is a multiple of 512
 			switch (mode) {
 			case 0:
+				hues[unlit[bin]] = getModeSetting(MODE_SPARKLES + mode, 2) * 10;
+				break;
 			case 1:
-				hues[unlit[bin]] = getModeSetting(MODE_SPARKLES, 2) * 10;
+				if (palette == 0) {	// palette 0 is changing through all colours, so start at 0;
+					hue = 0;
+				}  else {
+					hues[unlit[bin]] = palettes[palette][random8(0, 5)];
+				}
 				break;
 			case 2:
 				hues[unlit[bin]] = random8();
@@ -94,7 +113,11 @@ void mode_sparkles(bool firstRun, int mode) {
 					hues[unlit[bin]] = getModeSetting(MODE_SPARKLES, 2) * 10;
 					break;
 				case 1:
-					hues[unlit[bin]] = hue;
+					if (palette == 0) {	// palette 0 is changing through all colours
+						hues[unlit[bin]] = hue;
+					} else {
+						hues[unlit[bin]] = palettes[palette][random8(0, 5)];
+					}
 					break;
 				case 2:
 					hues[unlit[bin]] = random8();
@@ -138,30 +161,35 @@ void mode_sparkles(bool firstRun, int mode) {
 				unlit[bin] = temp;
 				phase[lit[i]] = 0;	// Set the new value to 0;
 
-				int changeSpeed = getModeSetting(MODE_SPARKLES + 1, 2);
 				switch (mode) {
 				case 0:
 					hues[lit[i]] = getModeSetting(MODE_SPARKLES, 2) * 10;
 					break;
-				case 1:
+				case 1: {
 					/*
 					We want to add sparkles so that the colour changes at a constant
 					rate regardless of the speed of the leds twinkling.
-					
+
 					*/
+					int changeSpeed = getModeSetting(MODE_SPARKLES + mode, 2);
 					if (hueSparklesAdded <= (MAX_CHANGE_SPEED - changeSpeed)) {
 						// We need to add sparkles of the existing hue
-						p("adding sparkle, hSA %u\n", hueSparklesAdded);
 						hueSparklesAdded = hueSparklesAdded + (MAX_SPEED - speed) + 1;
-					} else {
-						p("adding hue, currentHue %u\n", currentHue);
-						hueSparklesAdded = 1;
-						currentHue++;
-						if (currentHue > 256) currentHue = 0;
 					}
-					hue = currentHue;
+					else {
+						hueSparklesAdded = 1;
+						if (palette == 0) {	// palette 0 is changing through all colours
+							currentHue++;
+							hue = currentHue;
+							if (currentHue > 256) currentHue = 0;
+						}
+						else {
+							hue = palettes[palette][random8(0, 5)];
+						}
+					}
 					hues[lit[i]] = hue;
-					break;
+
+					}break;
 				case 2:
 					hues[lit[i]] = random8();
 					break;
