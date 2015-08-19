@@ -60,7 +60,7 @@ char* settingNames[NUM_MODES][SETTINGS_PER_MODE] = {
 	{ "1 number", "2 speed", "3 chnge spd", "" },		// Sparkles changing
 	{ "1 number", "2 speed", "", "" },					// Sparkles Rainbow
 	{ "1 density", "2 speed", "", "" },					// Rainbow
-	{ "1 heat",  "2 cooling", "", "" },					// Fire
+	{ "1 heat",  "2 cooling", "3 speed", "" },					// Fire
 	{ "1 sensitivity", "2 fade", "hue", "" },			// Volume
 	{ "1 sensitivity", "2 fade", "", "" },				// Volume2
 	{ "count", "", "", "" },				// Volume2
@@ -76,7 +76,7 @@ int settingSettings[NUM_MODES][SETTINGS_PER_MODE][4] = {
 	{ { 0, NUM_LEDS / 10, 0, 25 },	{ 0, 10, 0, 3},		{0, 10, 0, 1},	{} },
 	{ { 0, NUM_LEDS / 10, 0, 25 },	{ 0, 10, 0, 5 },	{}, {} },
 	{ { 0, 30, 0, 15 },				{ 0, 10, 0, 9 },	{}, {} },
-	{ { 0, 30, 0, 15 }, { 0, 10, 0, 9 }, {}, {} },
+	{ { 0, 30, 0, 15 }, { 0, 10, 0, 9 }, {0,10,0,5}, {} },
 	{ { 0, 10, 0, 5 }, { 0, 10, 0, 5 }, {0,2,0,0}, {} },
 	{ { 0, 10, 0, 1 }, { 0, 10, 0, 5 }, {}, {} },
 	{ { 0, 500, 0, 1 }, {}, {}, {} },
@@ -90,7 +90,7 @@ int settingCounts[] = {
 	3,
 	2,
 	2,
-	2,
+	3,
 	3,
 	2,
 	1,
