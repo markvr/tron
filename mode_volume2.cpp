@@ -20,8 +20,7 @@ void mode_volume2(bool firstRun) {
 	static unsigned int volume;
 	static unsigned int oldVolume = 0;
 	static long lastUpdate = 0;
-	int maxVolume = 1000 - (100 * getModeSetting(MODE_VOLUME2, 0)) + 1;
-//	int sensitivity = getModeSetting(MODE_VOLUME2, 0);
+	int sensitivity = getModeSetting(MODE_VOLUME2, 0);
 	int fadeRate = getModeSetting(MODE_VOLUME2, 1);
 
 	//	const int ribbons[][2] = { { 0, 15 }, { 16, 35 }, { 36, 50 }, { 51, 65 }, { 66, 81 }, { 82, 101 }, { 102, 116 }, { 117, 131 }, { 132, 142 }, { 143, 151 }, { 152, 160 }, { 161, 168 }, { 169, 179 }, { 180, 188 }, { 189, 197 }, { 198, 205 }, { 206, 218 }, { 219, 230 }, { 231, 240 }, { 241, 254 }, { 255, 266 }, { 267, 285 }, { 286, 296 } };
@@ -61,7 +60,8 @@ void mode_volume2(bool firstRun) {
 		lastUpdate = millis();
 		memset(leds, 0, NUM_LEDS * sizeof(struct CRGB));
 
-		unsigned int newVolume = LocalAudio::getVolume(true);
+		unsigned int newVolume = LocalAudio::getVolume(true) * (sensitivity / 5.0);
+
 		if (newVolume > volume) {
 			volume = newVolume;
 		}  else {
@@ -73,7 +73,7 @@ void mode_volume2(bool firstRun) {
 			int endVolume = (threshold + 1) * volumePerThreshold;
 
 
-			/*volume 96
+			/*volume 96 (60-48)/(96-48)
 				threshold 0, startVolume 0  endVolume 48, brightness 255
 				ribbon 0, startLed 36  endLed 50, brightness 255
 				ribbon 0, startLed 51  endLed 65, brightness 255
@@ -99,12 +99,16 @@ void mode_volume2(bool firstRun) {
 
 			int brightness;
 			if (volume > endVolume) {
-				brightness = 255; 				// set full brightness
-			} else {	// fix brightness fading
-				brightness = 255 - volume - startVolume;
+				brightness = 255; 				
+			} else if (volume > startVolume) {	
+				brightness = max(50, 255 * (float)(volume - startVolume) / (float)(endVolume - startVolume));
+			} else {
+				brightness = 50;
 			}
+
+
 			p("\t threshold %u, startVolume %u  endVolume %u, brightness %u\n", threshold, startVolume, endVolume, brightness);
-			if (brightness < 50) brightness = 50;
+			
 			for (int ribbon = 0; ribbon < thresholds[threshold][2]; ribbon++) {
 				p("\t\t ribbon %u, startLed %u  endLed %u, brightness %u \n", threshold, ribbons[threshold][ribbon][0], ribbons[threshold][ribbon][1], brightness);
 				for (int led = ribbons[threshold][ribbon][0]; led < ribbons[threshold][ribbon][1]; led++) {

@@ -8,7 +8,7 @@
 #define MODE_PIN 12
 #define NUM_MODES 10
 #define SETTINGS_PER_MODE 5
-#define NUM_LEDS 297
+#define NUM_LEDS 350
 
 #define MODE_SETTING 0
 
