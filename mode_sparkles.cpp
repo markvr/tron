@@ -172,7 +172,7 @@ void mode_sparkles(bool firstRun, int mode) {
 
 					*/
 					int changeSpeed = getModeSetting(MODE_SPARKLES + mode, 2);
-					if (hueSparklesAdded <= (MAX_CHANGE_SPEED - changeSpeed)) {
+					if (hueSparklesAdded <= 3 * (MAX_CHANGE_SPEED - changeSpeed)) {
 						// We need to add sparkles of the existing hue
 						hueSparklesAdded = hueSparklesAdded + (MAX_SPEED - speed) + 1;
 					}

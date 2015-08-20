@@ -13,10 +13,10 @@ void mode_fixed(bool firstRun) {
 	int hue = getModeSetting(MODE_FIXED, 0) * 10;
 	int sat = getModeSetting(MODE_FIXED, 1) * 10;
 	int sparkles = getModeSetting(MODE_FIXED, 2) * 3;
+	int sparklesSpeed = 10 - getModeSetting(MODE_FIXED, 3);
 	int brightness = constrain(2 * getSetting(GLOBAL_SETTINGS, 2), 0, 255);
 	static long lastUpdate = millis();
-	int delay = 100;
-	if (millis() - lastUpdate > delay) {
+	if (millis() - lastUpdate > 20 * sparklesSpeed) {
 		for (int i = 0; i < NUM_LEDS; i++) {
 			leds[i] = CHSV(hue, sat, brightness);
 		}
