@@ -63,7 +63,7 @@ char* settingNames[NUM_MODES][SETTINGS_PER_MODE] = {
 	{ "1 heat",  "2 cooling", "3 speed", "" },					// Fire
 	{ "1 sensitivity", "2 fade", "hue", "" },			// Volume
 	{ "1 sensitivity", "2 fade", "", "" },				// Volume2
-	{ "count", "", "", "" },				// Volume2
+	{ "density", "speed", "", "" },				// fill
 };
 
 
@@ -79,7 +79,7 @@ int settingSettings[NUM_MODES][SETTINGS_PER_MODE][4] = {
 	{ { 0, 30, 0, 15 }, { 0, 10, 0, 9 }, {0,10,0,5}, {} },
 	{ { 0, 10, 0, 5 }, { 0, 10, 0, 5 }, {0,2,0,0}, {} },
 	{ { 0, 10, 0, 1 }, { 0, 10, 0, 5 }, {}, {} },
-	{ { 0, 500, 0, 1 }, {}, {}, {} },
+	{ { 0, 10, 0, 5 }, {0,10,0,5}, {}, {} },
 };
 
 // How many above settings are needed for each mode?
@@ -93,7 +93,7 @@ int settingCounts[] = {
 	3,
 	3,
 	2,
-	1,
+	2,
 };
 
 

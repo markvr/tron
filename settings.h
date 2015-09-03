@@ -24,7 +24,8 @@
 #define MODE_FIRE 6
 #define MODE_VOLUME 7
 #define MODE_VOLUME2 8
-#define MODE_COUNT 9
+#define MODE_FILL 9
+#define MODE_COUNT 99
 
 const int RIBBONS[][2] = {
 	{ 0, 15 }, // upper right leg inside
